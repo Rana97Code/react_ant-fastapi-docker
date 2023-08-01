@@ -1,0 +1,7 @@
+Create next app>> npx create-next-app app_name
+run app>>  npm run dev
+
+
+Use Lodash for frontend query filter.
+
+for convert html to js >>https://transform.tools/html-to-jsx

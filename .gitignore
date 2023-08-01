@@ -1,0 +1,16 @@
+# For BackEnd
+
+FastSMS/env
+FastSMS/venv
+FastSMS/__pycache__
+FastSMS/app/__pycache__
+.idea
+ __pycache__/
+ *.pyc
+
+#For FrontEnd
+
+react-front/node_modules
+# NextAPP/.next
+react-front/.npm
+react-front/.git

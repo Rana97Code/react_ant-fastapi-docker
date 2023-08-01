@@ -1,0 +1,220 @@
+Download Docker Desktop version from this website
+https://www.docker.com/
+
+After install then start 
+
+Create a App File as container 
+then this file create an other file name : docker-compose.yami
+
+
+If we run an existing project in docker then we have to create a File name Dockerfile file inside both fontend and backend section
+Then we have to create another file in both section name: .dockerignore
+
+
+In MERN Project Inside both Fontend & Backend
+https://www.youtube.com/watch?v=PhmIsxkskhY
+
+
+In This this project folder
+create folder: docker-compose.yaml
+
+version: "3.9"
+services: 
+  mongodb:
+    image:"mongo"
+    volumes:
+      -data:/data/db
+  backend:
+    build: ./express_backend
+    ports:
+      -"80:80"
+    volumes:
+      -logs:app/logs
+      -./express_backend:/app
+      -/app/node_modules
+    depends_on:
+      -mongodb
+
+  frontend:
+      build: ./react_fontend
+      ports:
+        -"3000:3000"
+      volumes:
+      -./react_fontend/src:/app/src
+      stdin_open: true
+      tty: true
+      depends_on:
+      - express_backend
+    volumes:
+        data:
+        logs:
+
+
+
+create folder: Dockerfile
+in this folder:
+	FROM node
+
+	WORKDIR /index
+
+	COPY package.json .
+
+	RUN npm install
+
+	COPY . .
+	
+	EXPOSE 80
+
+	CMD ["npm", "start"] 
+
+create folder: .dockerignore
+in this file add this:
+	node_modules
+	Dockerfile
+	.git;
+
+
+******************For Flask App**********************
+
+
+version: "4.17"
+
+services: 
+  flask-app-container:
+    image: "flask:2.2.3"
+    # container-name: flask-backend
+    build: ./app/
+    depends_on:
+      - db
+    ports: 
+      - 5000:5000
+
+
+  db:
+    image: mysql
+    # build: ./db/
+    restart: always
+    ports: 
+      - "3306:3306"
+    environment: 
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_DATABASE: 'flask_app'
+    # volumes:
+	There will have created volume 
+    #   - ./db:/var/lib/mysql
+    #   - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8077:80
+    environment:
+      #- PMA_ARBITRARY=1
+      - PMA_HOST=db
+    depends_on:
+      - db
+
+volumes:
+  db:
+    driver: local
+
+
+
+**************  For FastAPI ****************
+All Requirements should be mentions in requirements.txt
+
+And Dockerfile will
+
+# 
+FROM python:3.11.1
+
+WORKDIR /app
+
+COPY ./requirements.txt /app/requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+
+**********In configuire file change **********
+
+
+# SQLALCHEMY_DATABASE_URL = "mysql://root@localhost/fastapi"     #for localhost 
+SQLALCHEMY_DATABASE_URL = "mysql+mysqldb://root:root@db:3306/fastapi"      #for docker in FastAPI need to add mysql+mysqldb for this we have to install mysqlclient
+	#- and root user and password and host is @db that mention in docker-compose.yaml
+
+
+
+After ALL done run the command >> docker-compose up
+
+*******************Using Docker Manually from CMD by this command***********
+
+for create image :  go to the project folder then then make this project as a image of docker for this 
+
+-d means that docker will run the container in the background in “detached” mode. If -d is not used the container run in the default foreground mode
+
+run the command>>		 docker build -t ranabiswas(docker-hub-username)/app-name .
+check all images>>	 docker images
+run the image>> 		 docker run -d -p 5000:5000 docker-image-name-here
+check all CONTAINER>> 	 docker ps -a
+
+check only running CONTAINER>> 	docker ps
+stop running image/container >> 	docker stop container-name
+
+for docker-compose.yaml up >> 	docker compose up
+
+  
+
+********Docker for flask *********
+https://www.youtube.com/watch?v=q9vLXtJZtaw
+
+
+////Docker image create in docker destktop run this command
+>>docker build -t rest-apis .
+
+
+******************Need to create docker volume*******************
+	for mysql or any database data stored need to create a volume that will define in docker-compose.yeml file
+		example:     volumes:
+     				    - mydatabase:/var/lib/mysql
+
+		this mydatabase is a volume name
+
+In local pc terminal >> docker volume ls
+for create new volume>> docker volume create mydatabase
+for knowing all command aboute voluem>> docker volume --help
+
+
+
+********** Docker For Mysql Database **********
+https://migueldoctor.medium.com/run-mysql-phpmyadmin-locally-in-3-steps-using-docker-74eb735fa1fc
+
+mysql command: http://g2pc1.bu.edu/~qzpeng/manual/MySQL%20Commands.htm
+
+using terminal >>$ docker pull mysql:8.0.1   /latest
+
+for setup mysql database using terminal>> $ docker run --name my-own-mysql -e MYSQL_ROOT_PASSWORD=mypass123 -d mysql:8.0.1
+
+The option --name allows us to assign a specific name for our running container. Here my-own-mysql
+
+check mysql database connection:>>  docker compose exec db mysql -u root -p
+check mysql database:>> 		show databases;
+check mysql database table>>        show tables from flask_app;
+go to db>> 					use flask_app
+show db table>>                     show tables;
+show db table all data>>            select * from customers;
+
+
+https://hub.docker.com/_/phpmyadmin
+
+For phpmyadmin >> $ docker pull phpmyadmin/phpmyadmin:latest
+for run and connect with mysql>> $ docker run --name my-own-phpmyadmin -d --link my-own-mysql:db -p 8081:80 phpmyadmin/phpmyadmin
+
+for phpmyadmin any free port we can use

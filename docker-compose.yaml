@@ -1,0 +1,56 @@
+version: "3"
+
+services:
+  backend:
+    build:
+      context: ./FastSMS
+      dockerfile: Dockerfile
+    # volumes:
+    #    - "./FastSMS:/app"
+       
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+
+  frontend:
+    build:
+      context: ./react-front
+      dockerfile: Dockerfile
+    volumes:
+      - "./react-front:/app"
+      - /app/node_modules
+    ports:
+      - 3000:3000
+
+    depends_on:
+      - backend
+
+  db:
+    image: mysql:8.0.21
+    command: --default-authentication-plugin=caching_sha2_password
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      # MYSQL_ROOT_PASSWORD: ""
+      # MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    volumes:
+      # - ./db:/docker-entrypoint-initdb.d/:ro
+      - mydatabase:/var/lib/mysql
+
+  pmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      #- PMA_ARBITRARY=1
+      - PMA_HOST=db
+    depends_on:
+      - db
+
+volumes:
+  mydatabase:
+    driver: local
