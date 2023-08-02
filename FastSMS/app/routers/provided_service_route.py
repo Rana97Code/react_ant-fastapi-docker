@@ -74,33 +74,10 @@ def index(db:Session=Depends(get_db)):
 
 @p_service_router.get("/get_Provided_service/{pp_id}",response_model=ServiceProductSchema)
 def get_itm(pp_id:int,db:Session=Depends(get_db)):
-    # try:
-    u=db.query(Provided_service,Customer,Unit).join(Customer, Provided_service.customer_id == Customer.id ).join(Unit, Provided_service.unit_id == Unit.id )\
-            .add_columns(Provided_service.product_name,Provided_service.unit_id, Unit.unit_name, Provided_service.customer_id, Customer.customer_name, Provided_service.id, Provided_service.p_qty,  Provided_service.purchase_date,
-            Provided_service.service_time,Provided_service.notify_time,Provided_service.notification_type, Provided_service.expiry_date,Provided_service.renew_date).filter(Provided_service.id == pp_id).first()
-        # return (u)
-    p_pro = []
-    for pp in u:
-        # print(pp.product_name, pp.customer_name,pp.unit_name)
-       p_pro.append({
-            'id':pp.id,
-            'product_name':pp.product_name,
-            'unit_name':pp.unit_name,
-            'customer_name':pp.customer_name,
-            'p_qty':pp.p_qty,
-            'purchase_date':pp.purchase_date,
-            'expiry_date':pp.expiry_date,
-            'service_time':pp.service_time,
-            'notify_time':pp.notify_time,
-            'notification_type':pp.notification_type,
-            'renew_date':pp.renew_date,
-            'notify_time':pp.notify_time
-            })
-
-    junit = jsonable_encoder(p_pro)
+    u=db.query(Provided_service).filter(Provided_service.id == pp_id).first()
+    junit = jsonable_encoder(u)
     return JSONResponse(content=junit)
-#  except:
-#     return HTTPException(status_code=422, details="Purchase Product not found")
+  
 
 @p_service_router.put("/update_Provided_service/{pp_id}")
 def update(pp_id:int,p_product:ProServiceCreateSchema,db:Session=Depends(get_db)):

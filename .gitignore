@@ -9,8 +9,8 @@ FastSMS/app/__pycache__
  *.pyc
 
 #For FrontEnd
+# NextAPP/.next
 
 react-front/node_modules
-# NextAPP/.next
 react-front/.npm
-react-front/.git
+react-front/.gitt

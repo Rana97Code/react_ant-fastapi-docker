@@ -54,5 +54,5 @@ class ServiceProductSchema(BaseModel):
     sms_id:str | None
     email_id:str | None
 
-    class Config:
-        orm_mode=True
+class Config:
+    orm_mode=True
