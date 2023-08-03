@@ -24,14 +24,14 @@ export default function AddServicetime() {
   const [unit_id,setUnt]=useState("");
   const [purchase_date,setDate]=useState("");
   const [service_time,setTime]=useState("");
-  const [notify_time,setNotif]=useState("");
+  const [notify_time,setNtime]=useState("");
   const [notify_type,setNotifTyp]=useState("");
   const [sms_id,setSmstitl]=useState("");
   const [email_id,setEmltitl]=useState("");
  
   const [Unit, setUnit]= useState([]); 
   const [Customer, setCustomer]= useState([]); 
-  const [Servicet, setServicTime]= useState([]); 
+  // const [Servicet, setServicTime]= useState([]); 
   const [Emlcontent, setEmlcontent]= useState([]); 
   const [Smscontent, setSmscontent]= useState([]); 
 
@@ -77,14 +77,16 @@ let result = await fetch( `http://127.0.0.1:8000/get_Provided_service/${params.i
 if(result.ok){
 const data = await result.json();
 // console.warn(data);
-setCust(data.customer_name)    
+setCust(data.customer_id)    
 setPro(data.product_name)
 setQty(data.p_qty)
 setUnt(data.unit_id)
 setDate(data.purchase_date)
 setTime(data.service_time)
-setNotif(data.notify_time)
-setNotifTyp(data.notify_type)
+setNtime(data.notify_time)
+setNotifTyp(data.notification_type)
+setSmstitl(data.sms_id)
+setEmltitl(data.email_id)
 }
  
   const pdata = await fetch(`http://127.0.0.1:8000/units`);
@@ -104,17 +106,17 @@ setNotifTyp(data.notify_type)
   }else{
   let res = await cdata.json();
   setCustomer(res)
-  console.warn(res)
+  // console.warn(res)
   }
 
-  const servtime = await fetch(`http://127.0.0.1:8000/servicetime`);
+  // const servtime = await fetch(`http://127.0.0.1:8000/servicetime`);
   
-  if (!servtime.ok){
-    throw new Error('Could not data exist');
-  }else{
-    let res = await servtime.json();
-    setServicTime(res);
-  }
+  // if (!servtime.ok){
+  //   throw new Error('Could not data exist');
+  // }else{
+  //   let res = await servtime.json();
+  //   setServicTime(res);
+  // }
 
 
   const content = await fetch(`http://127.0.0.1:8000/allmail_content`);
@@ -130,6 +132,7 @@ setNotifTyp(data.notify_type)
 
     setEmlcontent(email);
     setSmscontent(sms);
+    // console.warn(sms);
     }
 
 
@@ -169,10 +172,28 @@ const [emaildisabled, setEmdisabled] = useState(true);
 const emlcheck = async (e)=>{
   setEmdisabled(!emaildisabled);
 }
+
 const smscheck = async (e)=>{
-  setDisabled(!smsdisabled);
+    setDisabled(!smsdisabled);
 }
 
+const [isChecked, setRcheck] = useState("");
+// console.warn(notify_type);
+
+const setCheck = (e) => {
+  if(notify_type=='SMS'){
+  setRcheck(e.target.checked);
+  }else{
+  setRcheck(e.target.unchecked);
+  }
+};
+// checked={setCheck}
+// const smscheck = (e) => {
+//   console.log(`checked = ${e.target.checked}`);
+  // if(notify_type=='SMS'){
+  //   setCheck(isChecked);
+  // }
+// };
 
 
   return (
@@ -191,7 +212,7 @@ const smscheck = async (e)=>{
       <Form  name="normal_login"  className="login-form"  initialValues={{ remember: true, }}  >
           <Row>
               <Col>
-                <Select showSearch style={{width: 280 }} placeholder="Select Customer " value={customer_id} onChange={(e)=>setCust(e)} optionLabelProp="label"  >
+                <Select style={{width: 280 }} placeholder="Select Customer " value={customer_id} onChange={(e)=>setCust(e)} optionLabelProp="label"  >
                   <Option selected ><Space> Select Customer Name </Space> </Option>
                   {Customer.map(customer => (
                     <Option key={customer.value} value={customer.id} label={customer.customer_name}><Space> {customer.customer_name} </Space> </Option>
@@ -236,13 +257,14 @@ const smscheck = async (e)=>{
 <br></br>
         <Row>
           <Col>
-            <Form.Item style={{width: 280 }} name="service_start"  rules={[{ required: true, message: 'Please input Service Date!', }, ]} >
-              <Input type="date" value={purchase_date}
+            {/* <Form.Item style={{width: 280 }} name="service_start"  rules={[{ required: true, message: 'Please input Service Date!', }, ]} > */}
+              <Input type="date" style={{width: 280 }} placeholder={purchase_date}
                 onChange={(e)=>setDate(e.target.value)}  />
-            </Form.Item>
+            {/* </Form.Item> */}
           </Col>
         </Row>
 
+    <br />
 
         <Row>
             <Col>
@@ -263,33 +285,33 @@ const smscheck = async (e)=>{
 
         <Row>
             <Col>
-                <Select showSearch style={{width: 280 }} value={notify_time} onChange={(e)=>setNotif(e)} optionLabelProp="label"  >
-                  <Option selected><Space> Notify Before </Space> </Option>
+                <Select showSearch style={{width: 280 }} value={notify_time} onChange={(e)=>setNtime(e)} optionLabelProp="label"  >
+                  <Option selected ><Space> Notify Before </Space> </Option>
                   <Option value="7" label="7 Days"><Space> 7 Days </Space> </Option>
                   <Option value="15" label="15 Days"><Space> 15 Days </Space> </Option>
                   <Option value="30" label="1 Month"><Space> 1 Month </Space> </Option>
                 </Select>
             </Col>
           </Row>
+
           <br />
 
           <Row>
             <Col>
-            <Checkbox.Group  onChange={(e)=>setNotifTyp(e)} >
+              <Checkbox.Group onChange={(e)=>setNotifTyp(e)} >
                               {/* Notify Via: */}
                 <Row>
                   <Col span={12} >
-                    <Checkbox onClick={smscheck} value="SMS">SMS </Checkbox>
+                    <Checkbox onClick={smscheck}  value="SMS">SMS </Checkbox>
                     <hr />
-                    <Select disabled={smsdisabled} style={{width: 140 }} showSearch placeholder="SMS Title"  onChange={(e)=>setSmstitl(e)} optionLabelProp="label" >
+                    <Select disabled={smsdisabled} style={{width: 140 }} showSearch placeholder="SMS Title" value={parseInt(sms_id)} onChange={(e)=>setSmstitl(e)} optionLabelProp="label" >
                       <Option selected ><Space> Select </Space> </Option>
                       {Smscontent.map(content => (
                         <Option key={content.value} value={content.id} label={content.mail_title}><Space> {content.mail_title} </Space> </Option>
                       )) }
                     </Select>
                   </Col>
-                {/* </Row>
-                <Row> */}
+
                 <br />
                 <br />
 
@@ -297,7 +319,7 @@ const smscheck = async (e)=>{
                   <Col span={12} >
                     <Checkbox onClick={emlcheck} value="EMAIL">EMAIL</Checkbox>
                     <hr />
-                    <Select disabled={emaildisabled} style={{width: 140 }} showSearch placeholder="Email Title"  onChange={(e)=>setEmltitl(e)} optionLabelProp="label" >
+                    <Select disabled={emaildisabled} style={{width: 140 }} showSearch placeholder="Email Title" value={parseInt(email_id)} onChange={(e)=>setEmltitl(e)} optionLabelProp="label" >
                       <Option selected ><Space> Select </Space> </Option>
                       {Emlcontent.map(content => (
                         <Option key={content.value} value={content.id} label={content.mail_title}><Space> {content.mail_title} </Space> </Option>
@@ -306,12 +328,19 @@ const smscheck = async (e)=>{
                   </Col>
                  
                 </Row>
-             </Checkbox.Group>
+              </Checkbox.Group>
             </Col>
          </Row>
 
+          <br />
 
-           <br />
+          <Row>
+            <Col>
+              <Checkbox onChange={(e)=>setCheck(e)} checked={isChecked} value="SMS"> Auto Renew </Checkbox>
+           </Col>
+          </Row>
+
+          <br />
 
           <Form.Item>
             <Button type="primary" htmlType="submit" onClick={onSubmit} className="login-form-button">

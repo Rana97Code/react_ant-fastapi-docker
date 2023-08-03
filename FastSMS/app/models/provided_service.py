@@ -14,7 +14,7 @@ class Provided_service(Base):
     p_qty=Column(Integer,index=True)
     purchase_date = Column(DateTime,index=True, default=datetime.utcnow())
     service_time = Column(String(255),unique=True,index=True)    
-    notify_time = Column(Integer,index=True)    
+    notify_time = Column(String(255),index=True)    
     notification_type = Column(String(255),unique=True,index=True)  
     sms_id= Column(String(255),nullable=True)
     email_id= Column(String(255), nullable=True)
@@ -32,7 +32,7 @@ class ProServiceCreateSchema(BaseModel):
     # expiry_date:str
     # renew_date:str
     service_time:str
-    notify_time:int
+    notify_time:str
     notification_type:str
     sms_id:str | None
     email_id:str | None
@@ -49,7 +49,7 @@ class ServiceProductSchema(BaseModel):
     expiry_date:str | None 
     # renew_date:datetime | None
     service_time:str 
-    notify_time:int 
+    notify_time:str 
     notification_type:str 
     sms_id:str | None
     email_id:str | None
