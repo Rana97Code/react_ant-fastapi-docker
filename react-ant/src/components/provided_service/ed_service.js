@@ -22,12 +22,14 @@ export default function AddServicetime() {
   const [product_name,setPro]=useState("");
   const [p_qty,setQty]=useState("");
   const [unit_id,setUnt]=useState("");
-  const [purchase_date,setDate]=useState("");
+  const [expiry_date,setEdate]=useState("");
   const [service_time,setTime]=useState("");
   const [notify_time,setNtime]=useState("");
   const [notify_type,setNotifTyp]=useState("");
   const [sms_id,setSmstitl]=useState("");
   const [email_id,setEmltitl]=useState("");
+  const [auto_renewal,setAutorenew]=useState("");
+
  
   const [Unit, setUnit]= useState([]); 
   const [Customer, setCustomer]= useState([]); 
@@ -37,6 +39,12 @@ export default function AddServicetime() {
 
   const [formData, setData] = React.useState({});
   const [errors, setErrors] = React.useState({});
+
+  const notification_type= notify_type.toString();
+  const auto_renew= auto_renewal.toString();
+  const purchase_date= expiry_date;
+
+
 
   const params = useParams();   ///FOR Parameter Pass
   const navigate = useNavigate();
@@ -76,17 +84,17 @@ let result = await fetch( `http://127.0.0.1:8000/get_Provided_service/${params.i
 });
 if(result.ok){
 const data = await result.json();
-// console.warn(data);
 setCust(data.customer_id)    
 setPro(data.product_name)
 setQty(data.p_qty)
 setUnt(data.unit_id)
-setDate(data.purchase_date)
+setEdate(data.expiry_date)
 setTime(data.service_time)
 setNtime(data.notify_time)
 setNotifTyp(data.notification_type)
 setSmstitl(data.sms_id)
 setEmltitl(data.email_id)
+setAutorenew(data.auto_renew)
 }
  
   const pdata = await fetch(`http://127.0.0.1:8000/units`);
@@ -96,7 +104,6 @@ setEmltitl(data.email_id)
   }else{
   let res = await pdata.json();
   setUnit(res)
-  // console.warn(res)
   }
 
   const cdata = await fetch( `http://127.0.0.1:8000/customers`);
@@ -106,7 +113,6 @@ setEmltitl(data.email_id)
   }else{
   let res = await cdata.json();
   setCustomer(res)
-  // console.warn(res)
   }
 
   // const servtime = await fetch(`http://127.0.0.1:8000/servicetime`);
@@ -136,6 +142,7 @@ setEmltitl(data.email_id)
     }
 
 
+
 }
 
 const onSubmit = async (e)=>{
@@ -148,11 +155,10 @@ const onSubmit = async (e)=>{
     // }
    
 
-    console.warn(customer_id,product_name,p_qty,unit_id,purchase_date,service_time,notify_time);
-    // const user_id= JSON.parse(localStorage.getItem('user'))._id;   //for get logedin userid
-    let result = await fetch(`http://127.0.0.1:8000/update_Provided_service`,{
+    console.warn(customer_id, product_name, p_qty, unit_id,purchase_date, service_time,notify_time,notification_type,sms_id,email_id,auto_renew);
+    let result = await fetch(`http://127.0.0.1:8000/update_Provided_service/${params.id}`,{
         method: 'put',
-        body:JSON.stringify({customer_id, product_name, p_qty, unit_id, purchase_date, service_time,notify_time }),
+        body:JSON.stringify({customer_id, product_name, p_qty, unit_id, purchase_date, service_time,notify_time,notification_type,sms_id,email_id,auto_renew}),
         headers:{
             'Content-type':'application/json',
             // authorization: `bearer ${JSON.parse(localStorage.getItem('usertoken'))}` //for using middleware authontigation
@@ -163,37 +169,10 @@ const onSubmit = async (e)=>{
         console.warn(data );
         navigate('/service')
       }else{
-        navigate('/add_service')
+        navigate('/edit_service/'+params.id)
       }
   
 }
-const [smsdisabled, setDisabled] = useState(true);
-const [emaildisabled, setEmdisabled] = useState(true);
-const emlcheck = async (e)=>{
-  setEmdisabled(!emaildisabled);
-}
-
-const smscheck = async (e)=>{
-    setDisabled(!smsdisabled);
-}
-
-const [isChecked, setRcheck] = useState("");
-// console.warn(notify_type);
-
-const setCheck = (e) => {
-  if(notify_type=='SMS'){
-  setRcheck(e.target.checked);
-  }else{
-  setRcheck(e.target.unchecked);
-  }
-};
-// checked={setCheck}
-// const smscheck = (e) => {
-//   console.log(`checked = ${e.target.checked}`);
-  // if(notify_type=='SMS'){
-  //   setCheck(isChecked);
-  // }
-// };
 
 
   return (
@@ -205,12 +184,14 @@ const setCheck = (e) => {
 
 
    <Content style={{ margin: '24px 16px', padding: 24, minHeight: 350, background: colorBgContainer, }} >
-    <Card bordered={false} style={{width: 500, height: 600, background: '#b5f5ec', marginTop: 50, marginLeft: 550, display: 'flex', justifyContent:'center', textAlign: 'center' }} >
+    <Card bordered={false} style={{width: 550, height: 680, background: '#d9d9d9', marginTop: 50, marginLeft: 550, display: 'flex', justifyContent:'center', textAlign: 'center' }} >
       <Space style={{ marginBottom: 30 }}>
         <Tag color="blue" style={{ width: 140, height: 25, textAlign: 'center'}}> Edit Service </Tag>
       </Space>
       <Form  name="normal_login"  className="login-form"  initialValues={{ remember: true, }}  >
-          <Row>
+          <Row justify="space-between">
+              <Col span={6}>  Customer Name: </Col>
+
               <Col>
                 <Select style={{width: 280 }} placeholder="Select Customer " value={customer_id} onChange={(e)=>setCust(e)} optionLabelProp="label"  >
                   <Option selected ><Space> Select Customer Name </Space> </Option>
@@ -218,13 +199,13 @@ const setCheck = (e) => {
                     <Option key={customer.value} value={customer.id} label={customer.customer_name}><Space> {customer.customer_name} </Space> </Option>
                   )) }
                 </Select>
-              {/* </Form.Item> */}
             </Col>
           </Row>
 
         <br />
 
-        <Row>
+        <Row justify="space-between">
+          <Col span={6}>  Service Name: </Col>
           <Col>
             {/* <Form.Item style={{width: 280 }} name="service_name"  rules={[{ required: true,  message: 'Please input Service Name!', }, ]} > */}
               <Input style={{width: 280 }} prefix={<DiffOutlined className="site-form-item-icon" />} 
@@ -238,7 +219,8 @@ const setCheck = (e) => {
 
         <br />
 
-        <Row>
+        <Row justify="space-between">
+          <Col span={6}>  Purchase Quantity: </Col>
           <Col>
             {/* <Form.Item style={{width: 140, position: 'relative', display: 'block' }} name="service_qty"  rules={[{ required: true,  message: 'Please input Service Name!', }, ]} > */}
                 <Input style={{width: 180 }} prefix={<PlusOutlined className="site-form-item-icon" />} 
@@ -254,19 +236,19 @@ const setCheck = (e) => {
             {/* </Form.Item> */}
           </Col>
         </Row>
-<br></br>
-        <Row>
+      <br></br>
+        <Row justify="space-between">
+          <Col span={6}>  Expiry Date: </Col>
+
           <Col>
-            {/* <Form.Item style={{width: 280 }} name="service_start"  rules={[{ required: true, message: 'Please input Service Date!', }, ]} > */}
-              <Input type="date" style={{width: 280 }} placeholder={purchase_date}
-                onChange={(e)=>setDate(e.target.value)}  />
-            {/* </Form.Item> */}
+              <Input style={{width: 280 }} placeholder={expiry_date} disabled />
           </Col>
         </Row>
 
     <br />
 
-        <Row>
+        <Row justify="space-between">
+            <Col span={6}> Extend Service Time: </Col>
             <Col>
                 <Select  showSearch style={{width: 280 }} value={service_time} onChange={(e)=>setTime(e)} optionLabelProp="label"  >
                   <Option selected ><Space> Select Duration </Space> </Option>
@@ -281,9 +263,10 @@ const setCheck = (e) => {
             </Col>
           </Row>
 
-            <br />
+        <br />
 
-        <Row>
+          <Row justify="space-between">
+            <Col span={6}>Notify Before: </Col>
             <Col>
                 <Select showSearch style={{width: 280 }} value={notify_time} onChange={(e)=>setNtime(e)} optionLabelProp="label"  >
                   <Option selected ><Space> Notify Before </Space> </Option>
@@ -296,15 +279,16 @@ const setCheck = (e) => {
 
           <br />
 
-          <Row>
+          <Row justify="space-between">
+            <Col span={4}> Notify Via: </Col>
             <Col>
-              <Checkbox.Group onChange={(e)=>setNotifTyp(e)} >
-                              {/* Notify Via: */}
+              <Checkbox.Group onChange={(e)=>setNotifTyp(e)} value={notify_type} >
+                 
                 <Row>
                   <Col span={12} >
-                    <Checkbox onClick={smscheck}  value="SMS">SMS </Checkbox>
+                    <Checkbox checked={notify_type==="SMS"} value="SMS">SMS</Checkbox>
                     <hr />
-                    <Select disabled={smsdisabled} style={{width: 140 }} showSearch placeholder="SMS Title" value={parseInt(sms_id)} onChange={(e)=>setSmstitl(e)} optionLabelProp="label" >
+                    <Select style={{width: 140 }} showSearch placeholder="SMS Title" value={parseInt(sms_id)} onChange={(e)=>setSmstitl(e)} optionLabelProp="label" >
                       <Option selected ><Space> Select </Space> </Option>
                       {Smscontent.map(content => (
                         <Option key={content.value} value={content.id} label={content.mail_title}><Space> {content.mail_title} </Space> </Option>
@@ -317,9 +301,9 @@ const setCheck = (e) => {
 
 
                   <Col span={12} >
-                    <Checkbox onClick={emlcheck} value="EMAIL">EMAIL</Checkbox>
+                    <Checkbox checked={notify_type==="EMAIL"} value="EMAIL">EMAIL</Checkbox>
                     <hr />
-                    <Select disabled={emaildisabled} style={{width: 140 }} showSearch placeholder="Email Title" value={parseInt(email_id)} onChange={(e)=>setEmltitl(e)} optionLabelProp="label" >
+                    <Select style={{width: 140 }} showSearch placeholder="Email Title" value={parseInt(email_id)} onChange={(e)=>setEmltitl(e)} optionLabelProp="label" >
                       <Option selected ><Space> Select </Space> </Option>
                       {Emlcontent.map(content => (
                         <Option key={content.value} value={content.id} label={content.mail_title}><Space> {content.mail_title} </Space> </Option>
@@ -334,9 +318,13 @@ const setCheck = (e) => {
 
           <br />
 
-          <Row>
+          <Row justify="space-between">
+            <Col span={4}>Service Renew: </Col>
             <Col>
-              <Checkbox onChange={(e)=>setCheck(e)} checked={isChecked} value="SMS"> Auto Renew </Checkbox>
+              <Checkbox.Group  onChange={(e)=>setAutorenew(e)} value={auto_renew} >
+                <Checkbox checked={auto_renew==="YES"} value="YES" > Auto-Renewal </Checkbox>
+                <Checkbox checked={auto_renew==="NO"} value="NO" > Not Auto-Renewal </Checkbox>
+              </Checkbox.Group>
            </Col>
           </Row>
 

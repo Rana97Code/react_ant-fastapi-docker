@@ -22,7 +22,7 @@ p_service_router = APIRouter()
 @p_service_router.post("/add_Provided_service")
 def create(p_p:ProServiceCreateSchema,db:Session=Depends(get_db)):
     srv=Provided_service(product_name=p_p.product_name,unit_id=p_p.unit_id,customer_id=p_p.customer_id,p_qty=p_p.p_qty,
-                         purchase_date=p_p.purchase_date,service_time=p_p.service_time,notify_time=p_p.notify_time, notification_type=p_p.notification_type,sms_id=p_p.sms_id,email_id=p_p.email_id,
+                         purchase_date=p_p.purchase_date,service_time=p_p.service_time,notify_time=p_p.notify_time, notification_type=p_p.notification_type,sms_id=p_p.sms_id,email_id=p_p.email_id,auto_renew=p_p.auto_renew,
                          expiry_date=datetime.strptime(p_p.purchase_date, '%Y-%m-%d') + relativedelta(months=int(p_p.service_time)),
                          renew_date = datetime.strptime(p_p.purchase_date, '%Y-%m-%d').date() + relativedelta(months=int(p_p.service_time))-relativedelta(days=int(p_p.notify_time))
                          )
@@ -49,7 +49,7 @@ def index(db:Session=Depends(get_db)):
     p_p = db.query(Provided_service,Customer,Unit,MailContent).join(Customer, Provided_service.customer_id == Customer.id ).join(Unit, Provided_service.unit_id == Unit.id )\
                 .join(MailContent, or_(Provided_service.sms_id == MailContent.id, Provided_service.email_id == MailContent.id) )\
             .add_columns(Provided_service.product_name,Unit.unit_name, Customer.customer_name, Provided_service.id, Provided_service.p_qty,  Provided_service.purchase_date,
-                 Provided_service.service_time,Provided_service.notify_time,Provided_service.notification_type,MailContent.mail_title, Provided_service.expiry_date,Provided_service.renew_date).all()
+                 Provided_service.service_time,Provided_service.notify_time,Provided_service.notification_type,MailContent.mail_title, Provided_service.expiry_date,Provided_service.renew_date,Provided_service.auto_renew).all()
     p_pro = []
     for pp in p_p:
         # print(pp.product_name, pp.customer_name,pp.unit_name)
@@ -65,7 +65,8 @@ def index(db:Session=Depends(get_db)):
             'notify_time':pp.notify_time,
             'notification_type':pp.notification_type,
             'mail_title':pp.mail_title,
-            'renew_date':pp.renew_date
+            'renew_date':pp.renew_date,
+            'auto_renew':pp.auto_renew
             })
 
     junit = jsonable_encoder(p_pro)
@@ -84,19 +85,22 @@ def update(pp_id:int,p_product:ProServiceCreateSchema,db:Session=Depends(get_db)
     try:
         u=db.query(Provided_service).filter(Provided_service.id==pp_id).first()
         u.product_name=p_product.product_name,
-        u.unit_id=p_product.unit_id,
         u.customer_id=p_product.customer_id,
-        u.purchase_date=p_product.purchase_date,
-        # u.expiry_date=p_product.expiry_date,
-        # u.renew_date=p_product.renew_date,
+        u.p_qty=p_product.p_qty,
+        u.unit_id=p_product.unit_id,
+        u.expiry_date=datetime.strptime(p_product.purchase_date, '%Y-%m-%d') + relativedelta(months=int(p_product.service_time)),
+        u.renew_date=datetime.strptime(p_product.purchase_date, '%Y-%m-%d').date() + relativedelta(months=int(p_product.service_time))-relativedelta(days=int(p_product.notify_time)),
         u.service_time=p_product.service_time
         u.notify_time=p_product.notify_time
         u.notification_type=p_product.notification_type
+        u.sms_id=p_product.sms_id
+        u.email_id=p_product.email_id
+        u.auto_renew=p_product.auto_renew
         db.add(u)
         db.commit()
         return {"Message":"Successfully Update"}
     except:
-        return HTTPException(status_code=404,detail="Update Uncessfull")
+        return HTTPException(status_code=404,detail="Update Unsuccessfull")
 
 @p_service_router.delete("/delete_Provided_service/{pp_id}",response_class=JSONResponse)
 def get_itm(pp_id:int,db:Session=Depends(get_db)):

@@ -27,6 +27,7 @@ export default function AddServicetime() {
   const [notify_type,setNotifTyp]=useState("");
   const [sms_id,setSmstitl]=useState("");
   const [email_id,setEmltitl]=useState("");
+  const [auto_renewal,setAutorenew]=useState("");
 
   // const m_id = [sms_title , email_title];
   // const mail_id = m_id;
@@ -45,6 +46,7 @@ export default function AddServicetime() {
   const navigate = useNavigate();
 
   const notification_type= notify_type.toString();
+  const auto_renew= auto_renewal.toString();
   // console.warn(no_type);
 
 
@@ -122,11 +124,11 @@ const onSubmit = async (e)=>{
     // }
    
 
-    console.warn(customer_id,product_name,p_qty,unit_id,purchase_date,service_time,notify_time,notification_type,sms_id,email_id);
+    console.warn(customer_id,product_name,p_qty,unit_id,purchase_date,service_time,notify_time,notification_type,sms_id,email_id,auto_renew);
     // const user_id= JSON.parse(localStorage.getItem('user'))._id;   //for get logedin userid
     let result = await fetch(`http://127.0.0.1:8000/add_Provided_service`,{
         method: 'post',
-        body:JSON.stringify({customer_id, product_name, p_qty, unit_id, purchase_date, service_time,notify_time,notification_type,sms_id,email_id }),
+        body:JSON.stringify({customer_id, product_name, p_qty, unit_id, purchase_date, service_time,notify_time,notification_type,sms_id,email_id,auto_renew}),
         headers:{
             'Content-type':'application/json',
             // authorization: `bearer ${JSON.parse(localStorage.getItem('usertoken'))}` //for using middleware authontigation
@@ -162,7 +164,7 @@ const smscheck = async (e)=>{
 
 
    <Content style={{ margin: '24px 16px', padding: 24, minHeight: 350, background: colorBgContainer, }} >
-    <Card bordered={false} style={{width: 500, height: 600, background: '#b5f5ec', marginTop: 50, marginLeft: 550, display: 'flex', justifyContent:'center', textAlign: 'center' }} >
+    <Card bordered={false} style={{width: 500, height: 620, background: '#f0f0f0', marginTop: 50, marginLeft: 550, display: 'flex', justifyContent:'center', textAlign: 'center' }} >
       <Space style={{ marginBottom: 30 }}>
         <Tag color="blue" style={{ width: 140, height: 25, textAlign: 'center'}}> Add New Service </Tag>
       </Space>
@@ -286,6 +288,17 @@ const smscheck = async (e)=>{
              </Checkbox.Group>
             </Col>
          </Row>
+         <br />
+
+          <Row>
+          <Col>
+            <Checkbox.Group  onChange={(e)=>setAutorenew(e)} >
+              <Checkbox value="YES" > Auto-Renewal </Checkbox>
+              <Checkbox value="NO" > Not Auto-Renewal </Checkbox>
+
+            </Checkbox.Group>
+          </Col>
+          </Row>
 
 
            <br />

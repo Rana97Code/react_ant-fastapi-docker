@@ -28,7 +28,6 @@ function Dashb() {
       alert("There is no data")
     }
     let servc = await service.json();
-    const srv = _.filter(servc, {'expiry_date':'EMAIL'});
 
     const now = new Date();
     const date =moment(now).format('YYYY-MM-DD');
@@ -56,6 +55,11 @@ function Dashb() {
     const cstmr = _.size(cust);
     setCustomerco(cstmr);
     setCustomer(cust);
+
+
+    // For Recursion
+    const recurs = _.filter(servc, {'expiry_date':date , 'auto_renew':'YES'});
+    console.warn(recurs);
 
   };
 

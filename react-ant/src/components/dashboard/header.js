@@ -28,7 +28,7 @@ const Headers = () => {
 
 
   const items = [
-    { label: 'User Name',  key: '3', icon: <UserOutlined />, danger: true, },
+    { label: 'User Name',  key: '3', icon: <UserOutlined />, danger: true,disabled: true },
     { label: 'User Email',  key: '4',  icon: <UserOutlined />,  danger: true,disabled: true, },
     { label: 'Log Out',  key: '4', icon: <UserOutlined />, danger: true, },
   ];
@@ -52,7 +52,7 @@ const Headers = () => {
 
   return (
 
-        <Header style={{ padding: 0,  background: colorBgContainer,  }}  >
+        <Header style={{ padding: 0,  background: "#006d75",  }}  >
           <Button  type="text" icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
             style={{  fontSize: '16px',  width: 64,  height: 64 }}

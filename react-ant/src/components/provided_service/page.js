@@ -21,7 +21,7 @@ const Service = ()=> {
           key: 'did',
           render: (did) => (
             <Space size="middle">
-              <Button href={"http://localhost:3000/edit_service/"+did}>Edit</Button> 
+              <Button style={{background:"#389e0d"}} href={"http://localhost:3000/edit_service/"+did}>Renew</Button> 
               <Button danger onClick={()=>deleteItem(did)}>Delete</Button>
             </Space>
           ),
