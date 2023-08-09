@@ -1,20 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { Layout,Anchor, theme,Table,Button ,Space  } from 'antd';
+import React, { useState, useEffect, useRef } from "react";
+import { SearchOutlined } from '@ant-design/icons';
+import { Layout,Input, theme,Table,Button ,Space, Col, Row,  } from 'antd';
+
 import Sidebar from '../dashboard/sidebar';
 import Headers from '../dashboard/header';
+import { values } from "lodash";
 // const { Link } = Anchor;
 const { Content } = Layout;
 
 const Service = ()=> {
   const { token: { colorBgContainer }, } = theme.useToken();
 
-
-
   const [ServiceProd, setContent]= useState([]);
+  const [serchText, setSerchtext]= useState("");
 
-    const columns = [ { title: 'ID',dataIndex: 'id' }, { title: 'Service Name',dataIndex: 's_name'}, { title: 'Customers Name',dataIndex: 'c_name'}, { title: 'Quantity',dataIndex: 'qty'},
-       { title: 'Service Start Date',dataIndex: 's_date'}, { title: 'Deuration',dataIndex: 'deuration'}, { title: 'Expire Date',dataIndex: 'exp'}, { title: 'Notify Before',dataIndex: 'nb'},
-       { title: 'Notify Date',dataIndex: 'nfd'},{ title: 'Notification Type',dataIndex: 'notf_typ'},{ title: 'SMS/Email Title',dataIndex: 'm_title'},
+
+
+
+    const columns = [
+        { title: 'Service Name',dataIndex: 's_name', filteredValue:[serchText],
+           onFilter:(value,record) => {return String(record.s_name).toLocaleLowerCase().includes(value.toLocaleLowerCase()) || String(record.c_name).toLocaleLowerCase().includes(value.toLocaleLowerCase())}
+        },
+        { title: 'Customers Name',dataIndex: 'c_name'}, { title: 'Quantity',dataIndex: 'qty'},{ title: 'Service Start Date',dataIndex: 's_date'},
+        { title: 'Duration',dataIndex: 'duration'}, { title: 'Expire Date',dataIndex: 'exp'}, { title: 'SMS/Email Title',dataIndex: 'm_title'},
         {
           title: 'Action',
           dataIndex: 'did',
@@ -25,12 +33,12 @@ const Service = ()=> {
               <Button danger onClick={()=>deleteItem(did)}>Delete</Button>
             </Space>
           ),
-        },];
+        }
+      ];
 
         const data = [];
-        ServiceProd.map((service) =>[ data.push({id:service.id, s_name:service.product_name, c_name:service.customer_name,qty:service.p_qty + service.unit_name,
-          s_date:service.purchase_date, deuration:service.service_time + 'Months', exp:service.expiry_date,  nb:service.notify_time + 'Days', nfd:service.renew_date,
-          notf_typ:service.notification_type, m_title:service.mail_title, did:service.id})]);
+        ServiceProd.map((service) =>[ data.push({s_name:service.product_name, c_name:service.customer_name,qty:service.p_qty + service.unit_name,
+          s_date:service.purchase_date, duration:service.service_time + 'Months', exp:service.expiry_date, m_title:service.mail_title, did:service.id})]);
 
     const options = {
         filterType: 'checkbox',
@@ -76,8 +84,14 @@ const getService = async () => {
         <Headers />
 
         <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, }} >
-          <Button style={{ float: 'right', margin: 20}} type="primary" href="http://localhost:3000/add_service">Add Service</Button>
-
+          <Row style={{ float: "right", margin: 20}}>
+            <Col>            
+                <Input.Search  placeholder="Search Services" onSearch={(value)=>{setSerchtext(value)}} onChange={(e) =>{setSerchtext(e.target.value)}} />
+            </Col>
+            <Col>
+                <Button  type="primary" href="http://localhost:3000/add_service" >Add Service</Button>
+            </Col>
+          </Row>
           <Table  columns={columns}  dataSource={data}  scroll={{ x: 1500, y: 600, }} />
         </Content>
 

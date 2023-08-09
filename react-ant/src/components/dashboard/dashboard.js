@@ -3,6 +3,7 @@ import { LockOutlined,InfoCircleOutlined, UserOutlined } from '@ant-design/icons
 import { Layout, Table ,Anchor, Dropdown,Card, Space,  Button, theme } from 'antd';
 import Sidebar from './sidebar';
 import Headers from './header';
+import { useParams } from 'react-router-dom';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -11,7 +12,25 @@ const {  Content } = Layout;
 
 
 function Dashb() {
+  const params = useParams();   ///FOR Parameter Pass
   const { token: { colorBgContainer }, } = theme.useToken();
+
+  const [customer_id,setCust]=useState("");
+  const [product_name,setPro]=useState("");
+  const [p_qty,setQty]=useState("");
+  const [unit_id,setUnt]=useState("");
+  const [expiry_date,setEdate]=useState("");
+  const [service_time,setTime]=useState("");
+  const [notify_time,setNtime]=useState("");
+  const [notify_type,setNotifTyp]=useState("");
+  const [sms_id,setSmstitl]=useState("");
+  const [email_id,setEmltitl]=useState("");
+  const [auto_renewal,setAutorenew]=useState("");
+
+  const notification_type= notify_type.toString();
+  const auto_renew= auto_renewal.toString();
+  const purchase_date= expiry_date;
+
 
   const [ExpServicen, setExpireservn]= useState([]); 
   const [ExpService, setExpireserv]= useState([]); 
@@ -59,13 +78,50 @@ function Dashb() {
 
     // For Recursion
     const recurs = _.filter(servc, {'expiry_date':date , 'auto_renew':'YES'});
-    console.warn(recurs);
+    const reid = _.map(recurs, 'id');
+    const auto_id= reid.toString();
+    console.warn(auto_id);
+
+
+    let result = await fetch( `http://127.0.0.1:8000/get_Provided_service/${reid}`,{
+      method: 'get',
+      headers:{
+          'Content-type':'application/json',
+          // authorization: `bearer ${JSON.parse(localStorage.getItem('usertoken'))}` //for using middleware authontigation
+      }
+    });
+    if(result.ok){
+    const data = await result.json();
+    console.log(data);
+    setCust(data.customer_id)    
+    setPro(data.product_name)
+    setQty(data.p_qty)
+    setUnt(data.unit_id)
+    setEdate(data.expiry_date)
+    setTime(data.service_time)
+    setNtime(data.notify_time)
+    setNotifTyp(data.notification_type)
+    setSmstitl(data.sms_id)
+    setEmltitl(data.email_id)
+    setAutorenew(data.auto_renew)
+    }
+
+    console.warn(customer_id, product_name, p_qty, unit_id,purchase_date, service_time,notify_time,notification_type,sms_id,email_id,auto_renew);
+    let resu = await fetch(`http://127.0.0.1:8000/update_Provided_service/${reid}`,{
+        method: 'put',
+        body:JSON.stringify({customer_id, product_name, p_qty, unit_id, purchase_date, service_time,notify_time,notification_type,sms_id,email_id,auto_renew}),
+        headers:{
+            'Content-type':'application/json',
+        }
+    });
 
   };
 
 
+
   useEffect(()=>{
     getData();
+    
     },[])  
 
 
