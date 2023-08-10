@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException,Query
 from typing import Union,List,Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, and_
-from app.models.provided_service import ProServiceCreateSchema,ServiceProductSchema,Provided_service
+from app.models.provided_service import ProServiceCreateSchema,ServiceProductSchema,ServiceProductIdArray,Provided_service
 from app.models.mail_content import MailContent
 from app.models.service_mail import Service_mail
 from app.models.customers import Customer
@@ -76,6 +76,13 @@ def index(db:Session=Depends(get_db)):
 @p_service_router.get("/get_Provided_service/{pp_id}",response_model=ServiceProductSchema)
 def get_itm(pp_id:int,db:Session=Depends(get_db)):
     u=db.query(Provided_service).filter(Provided_service.id == pp_id).first()
+    junit = jsonable_encoder(u)
+    return JSONResponse(content=junit)
+
+#for multiple id pass
+@p_service_router.get("/get_Provided_services",response_model=List[ServiceProductSchema])
+async def get_itm(pp_id:ServiceProductIdArray, db:Session=Depends(get_db)):
+    u=db.query(Provided_service).filter(Provided_service.id.in_(pp_id.s_id)).all()
     junit = jsonable_encoder(u)
     return JSONResponse(content=junit)
   

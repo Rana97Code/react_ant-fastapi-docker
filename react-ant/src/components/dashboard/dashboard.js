@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { LockOutlined,InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
-import { Layout, Table ,Anchor, Dropdown,Card, Space,  Button, theme } from 'antd';
+import { Layout, Table ,Card, Space, theme } from 'antd';
 import Sidebar from './sidebar';
 import Headers from './header';
 import { useParams } from 'react-router-dom';
 import _ from 'lodash';
 import moment from 'moment';
 
-const { Link } = Anchor;
+// const { Link } = Anchor;
 const {  Content } = Layout;
 
 
@@ -78,21 +78,21 @@ function Dashb() {
 
     // For Recursion
     const recurs = _.filter(servc, {'expiry_date':date , 'auto_renew':'YES'});
-    const reid = _.map(recurs, 'id');
-    const auto_id= reid.toString();
-    console.warn(auto_id);
+    const s_id = _.map(recurs, 'id');
+    const auto_id= s_id.toString();
+    console.warn({"s_id":s_id});
 
 
-    let result = await fetch( `http://127.0.0.1:8000/get_Provided_service/${reid}`,{
+    let result = await fetch( `http://127.0.0.1:8000/get_Provided_services`,{
       method: 'get',
+      data:JSON.stringify({"s_id":s_id}),
       headers:{
           'Content-type':'application/json',
-          // authorization: `bearer ${JSON.parse(localStorage.getItem('usertoken'))}` //for using middleware authontigation
       }
     });
     if(result.ok){
     const data = await result.json();
-    console.log(data);
+    console.warn(data);
     setCust(data.customer_id)    
     setPro(data.product_name)
     setQty(data.p_qty)
@@ -107,7 +107,7 @@ function Dashb() {
     }
 
     console.warn(customer_id, product_name, p_qty, unit_id,purchase_date, service_time,notify_time,notification_type,sms_id,email_id,auto_renew);
-    let resu = await fetch(`http://127.0.0.1:8000/update_Provided_service/${reid}`,{
+    let resu = await fetch(`http://127.0.0.1:8000/update_Provided_service/${s_id}`,{
         method: 'put',
         body:JSON.stringify({customer_id, product_name, p_qty, unit_id, purchase_date, service_time,notify_time,notification_type,sms_id,email_id,auto_renew}),
         headers:{

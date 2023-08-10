@@ -1,6 +1,7 @@
 from app.config import engine, Base, SessionLocal
 from sqlalchemy import Column,String,Integer,Boolean,Date,DateTime
 from pydantic import BaseModel
+from typing import Union,List,Optional
 # from typing import Annotated #
 # from fastapi import Body
 from datetime import datetime, time
@@ -56,6 +57,11 @@ class ServiceProductSchema(BaseModel):
     sms_id:str | None
     email_id:str | None
     auto_renew:str 
+
+#for multiple id pass
+class ServiceProductIdArray(BaseModel):
+    s_id: List[int] | None
+
 
 class Config:
     orm_mode=True

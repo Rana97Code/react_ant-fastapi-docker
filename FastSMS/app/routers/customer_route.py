@@ -36,8 +36,8 @@ def update(st_id:int,customer:CustomerCreateSchema,db:Session=Depends(get_db)):
         u.customer_name=customer.customer_name,
         u.customer_email=customer.customer_email,
         u.customer_phone=customer.customer_phone,
-        u.customer_address=customer.customer_address
-        u.company_name=customer.company_name
+        u.customer_address=customer.customer_address,
+        u.company_name=customer.company_name,
         db.add(u)
         db.commit()
         return {"Message":"Successfully Update"}
