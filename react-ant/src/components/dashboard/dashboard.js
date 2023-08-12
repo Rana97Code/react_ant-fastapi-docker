@@ -27,8 +27,8 @@ function Dashb() {
   const [email_id,setEmltitl]=useState("");
   const [auto_renewal,setAutorenew]=useState("");
 
-  const notification_type= notify_type.toString();
-  const auto_renew= auto_renewal.toString();
+  // const notification_type= notify_type.toString();
+  // const auto_renew= auto_renewal.toString();
   const purchase_date= expiry_date;
 
 
@@ -84,8 +84,8 @@ function Dashb() {
 
 
     let result = await fetch( `http://127.0.0.1:8000/get_Provided_services`,{
-      method: 'get',
-      data:JSON.stringify({"s_id":s_id}),
+      method: 'post',
+      body:JSON.stringify({"s_id":s_id}),
       headers:{
           'Content-type':'application/json',
       }
@@ -106,10 +106,10 @@ function Dashb() {
     setAutorenew(data.auto_renew)
     }
 
-    console.warn(customer_id, product_name, p_qty, unit_id,purchase_date, service_time,notify_time,notification_type,sms_id,email_id,auto_renew);
-    let resu = await fetch(`http://127.0.0.1:8000/update_Provided_service/${s_id}`,{
+    console.warn(customer_id, product_name, p_qty, unit_id, purchase_date, service_time, notify_time, notify_type, sms_id, email_id, auto_renewal);
+    let resu = await fetch(`http://127.0.0.1:8000/update_service`,{
         method: 'put',
-        body:JSON.stringify({customer_id, product_name, p_qty, unit_id, purchase_date, service_time,notify_time,notification_type,sms_id,email_id,auto_renew}),
+        body:JSON.stringify({"s_id":s_id}),
         headers:{
             'Content-type':'application/json',
         }

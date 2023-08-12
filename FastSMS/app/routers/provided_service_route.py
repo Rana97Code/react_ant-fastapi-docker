@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException,Query
-from typing import Union,List,Optional
+from typing import Union,List,Optional,Annotated
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, and_
 from app.models.provided_service import ProServiceCreateSchema,ServiceProductSchema,ServiceProductIdArray,Provided_service
@@ -79,14 +79,6 @@ def get_itm(pp_id:int,db:Session=Depends(get_db)):
     junit = jsonable_encoder(u)
     return JSONResponse(content=junit)
 
-#for multiple id pass
-@p_service_router.get("/get_Provided_services",response_model=List[ServiceProductSchema])
-async def get_itm(pp_id:ServiceProductIdArray, db:Session=Depends(get_db)):
-    u=db.query(Provided_service).filter(Provided_service.id.in_(pp_id.s_id)).all()
-    junit = jsonable_encoder(u)
-    return JSONResponse(content=junit)
-  
-
 @p_service_router.put("/update_Provided_service/{pp_id}")
 def update(pp_id:int,p_product:ProServiceCreateSchema,db:Session=Depends(get_db)):
     try:
@@ -105,6 +97,57 @@ def update(pp_id:int,p_product:ProServiceCreateSchema,db:Session=Depends(get_db)
         u.auto_renew=p_product.auto_renew
         db.add(u)
         db.commit()
+        return {"Message":"Successfully Update"}
+    except:
+        return HTTPException(status_code=404,detail="Update Unsuccessfull")
+
+#for type of parameter pass
+@p_service_router.post("/get_Provided_services",response_model=List[ServiceProductSchema])
+async def g_itm(pp_id:ServiceProductIdArray, db:Session=Depends(get_db)):
+    u=db.query(Provided_service).filter(Provided_service.id.in_(pp_id.s_id)).all()
+    junit = jsonable_encoder(u)
+    return JSONResponse(content=junit)
+
+@p_service_router.put("/get_up/{s_id}",response_model=List[ServiceProductSchema])
+async def get_id(s_id:str,db:Session=Depends(get_db)):
+    y = s_id.split(",")
+    # print(y)
+    u=db.query(Provided_service).filter(Provided_service.id.in_(y)).all()
+    junit = jsonable_encoder(u)
+    return JSONResponse(content=junit)
+
+  
+@p_service_router.put("/get_up_service")
+def get_u(pp_id:Annotated[list[str], Query()] = [62,75],db:Session=Depends(get_db)):
+    u=db.query(Provided_service).filter(Provided_service.id.in_(pp_id)).all()
+    junit = jsonable_encoder(u)
+    # print(junit)
+    return JSONResponse(content=junit)
+
+
+
+@p_service_router.put("/update_service/{pp_id}")
+async def upd(pp_id:str,p_product:ProServiceCreateSchema,db:Session=Depends(get_db)):
+    try:
+        y = pp_id.split(",")
+        u=db.query(Provided_service).filter(Provided_service.id.in_(y)).all()
+        print(u)
+
+        for i in range(len(u)):
+            u[i].product_name=p_product.product_name,
+            u[i].customer_id=p_product.customer_id,
+            u[i].p_qty=p_product.p_qty,
+            u[i].unit_id=p_product.unit_id,
+            u[i].expiry_date=datetime.strptime(p_product.purchase_date, '%Y-%m-%d') + relativedelta(months=int(p_product.service_time)),
+            u[i].renew_date=datetime.strptime(p_product.purchase_date, '%Y-%m-%d').date() + relativedelta(months=int(p_product.service_time))-relativedelta(days=int(p_product.notify_time)),
+            u[i].service_time=p_product.service_time
+            u[i].notify_time=p_product.notify_time
+            u[i].notification_type=p_product.notification_type
+            u[i].sms_id=p_product.sms_id
+            u[i].email_id=p_product.email_id
+            u[i].auto_renew=p_product.auto_renew
+            db.add(u)
+            db.commit()
         return {"Message":"Successfully Update"}
     except:
         return HTTPException(status_code=404,detail="Update Unsuccessfull")
