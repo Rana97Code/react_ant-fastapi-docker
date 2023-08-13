@@ -126,13 +126,18 @@ def get_u(pp_id:Annotated[list[str], Query()] = [62,75],db:Session=Depends(get_d
 
 
 
-@p_service_router.put("/update_service/{pp_id}")
-async def upd(pp_id:str,p_product:ProServiceCreateSchema,db:Session=Depends(get_db)):
-    try:
+@p_service_router.put("/update_service/{pp_id}",response_model=List[ServiceProductSchema])
+async def upd(pp_id:str, p_product:List[ProServiceCreateSchema], db:Session=Depends(get_db)):
+    # try:
+        print(pp_id)
         y = pp_id.split(",")
+        # print(y)
         u=db.query(Provided_service).filter(Provided_service.id.in_(y)).all()
-        print(u)
-
+        
+        # junit = jsonable_encoder(u)
+        # print(junit)
+        # return JSONResponse(content=junit)
+        i=[]
         for i in range(len(u)):
             u[i].product_name=p_product.product_name,
             u[i].customer_id=p_product.customer_id,
@@ -149,8 +154,8 @@ async def upd(pp_id:str,p_product:ProServiceCreateSchema,db:Session=Depends(get_
             db.add(u)
             db.commit()
         return {"Message":"Successfully Update"}
-    except:
-        return HTTPException(status_code=404,detail="Update Unsuccessfull")
+    # except:
+    #     return HTTPException(status_code=404,detail="Update Unsuccessfull")
 
 @p_service_router.delete("/delete_Provided_service/{pp_id}",response_class=JSONResponse)
 def get_itm(pp_id:int,db:Session=Depends(get_db)):

@@ -80,7 +80,8 @@ function Dashb() {
     const recurs = _.filter(servc, {'expiry_date':date , 'auto_renew':'YES'});
     const s_id = _.map(recurs, 'id');
     const auto_id= s_id.toString();
-    console.warn({"s_id":s_id});
+    // const test = auto_id.replace("\\'", " ");
+    console.log({auto_id});
 
 
     let result = await fetch( `http://127.0.0.1:8000/get_Provided_services`,{
@@ -107,9 +108,9 @@ function Dashb() {
     }
 
     console.warn(customer_id, product_name, p_qty, unit_id, purchase_date, service_time, notify_time, notify_type, sms_id, email_id, auto_renewal);
-    let resu = await fetch(`http://127.0.0.1:8000/update_service`,{
+    let resu = await fetch(`http://127.0.0.1:8000/update_Provided_service/${auto_id}`,{
         method: 'put',
-        body:JSON.stringify({"s_id":s_id}),
+        body:JSON.stringify({customer_id, product_name, p_qty, unit_id, purchase_date, service_time, notify_time, notify_type, sms_id, email_id, auto_renewal}),
         headers:{
             'Content-type':'application/json',
         }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { InfoCircleOutlined, UserOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, UserOutlined, ArrowLeftOutlined, MailOutlined,MobileOutlined,BankOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Col, Row, Card, Tooltip, Space, Layout, theme, Tag  } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../dashboard/sidebar';
@@ -104,7 +104,7 @@ const onSubmit = async (e)=>{
               <Row>
                 <Col>
                   <Form.Item  name="customer_email"  rules={[{ required: true,  message: 'Please input your Customer Email!', }, ]} >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} 
+                    <Input prefix={<MailOutlined className="site-form-item-icon" />} 
                     suffix={ <Tooltip title="Enter Your Orginal User Name">
                         <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                       </Tooltip> }
@@ -116,7 +116,7 @@ const onSubmit = async (e)=>{
               <Row>
                 <Col>
                   <Form.Item  name="customer_pho"  rules={[{ required: true,  message: 'Please input your Customer Phone!', }, ]} >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} 
+                    <Input prefix={<MobileOutlined  className="site-form-item-icon" />} 
                     suffix={ <Tooltip title="Enter Your Orginal User Name">
                         <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                       </Tooltip> }
@@ -128,7 +128,7 @@ const onSubmit = async (e)=>{
               <Row>
                 <Col>
                   <Form.Item  name="customer_addr"  rules={[{ required: true,  message: 'Please input your Customer Address!', }, ]} >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} 
+                    <Input prefix={<BankOutlined  className="site-form-item-icon" />} 
                     suffix={ <Tooltip title="Enter Your Orginal User Name">
                         <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                       </Tooltip> }
@@ -140,7 +140,7 @@ const onSubmit = async (e)=>{
               <Row>
                 <Col>
                   <Form.Item  name="company"  rules={[{ required: true,  message: 'Please input your Company!', }, ]} >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} 
+                    <Input prefix={<BankOutlined className="site-form-item-icon" />} 
                     suffix={ <Tooltip title="Enter Your Orginal User Name">
                         <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                       </Tooltip> }

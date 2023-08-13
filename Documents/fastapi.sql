@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Aug 01, 2023 at 11:27 AM
+-- Generation Time: Aug 13, 2023 at 11:14 AM
 -- Server version: 8.0.21
 -- PHP Version: 8.1.17
 
@@ -45,7 +45,8 @@ INSERT INTO `customers` (`id`, `customer_name`, `customer_email`, `customer_phon
 (3, 'space x', 'space@twitter.com', '77827339', 'Los Angelious', 'Space X America', NULL),
 (4, 'Xens ad', 'xens@email.com', '857554736543', 'Korea', 'Korean Company', NULL),
 (5, 'Bill Gates', 'billgates@email.com', '8576364563', 'America', 'Microsoft', NULL),
-(15, 'G.P.', 'gp@email.com', '0170000000', 'Bosundhara ', 'Grameen Phone', NULL);
+(15, 'G.P.', 'gp@email.com', '0170000000', 'Bosundhara ', 'Grameen Phone', NULL),
+(16, 'MD. Babor Ali', 'babor@bmitsolutionsltd.com', '01716462613', '31 Lakedrive road', 'Cyber Trust', NULL);
 
 -- --------------------------------------------------------
 
@@ -84,14 +85,15 @@ CREATE TABLE `provided_service` (
   `unit_id` int NOT NULL,
   `customer_id` int NOT NULL,
   `p_qty` int NOT NULL,
-  `purchase_date` datetime DEFAULT NULL,
-  `expiry_date` varchar(255) DEFAULT NULL,
+  `purchase_date` date DEFAULT NULL,
+  `expiry_date` date DEFAULT NULL,
   `renew_date` varchar(255) DEFAULT NULL,
   `service_time` varchar(100) NOT NULL,
-  `notify_time` int NOT NULL,
+  `notify_time` varchar(20) NOT NULL,
   `notification_type` varchar(255) NOT NULL,
   `sms_id` varchar(20) DEFAULT NULL,
   `email_id` varchar(20) DEFAULT NULL,
+  `auto_renew` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -99,9 +101,13 @@ CREATE TABLE `provided_service` (
 -- Dumping data for table `provided_service`
 --
 
-INSERT INTO `provided_service` (`id`, `product_name`, `unit_id`, `customer_id`, `p_qty`, `purchase_date`, `expiry_date`, `renew_date`, `service_time`, `notify_time`, `notification_type`, `sms_id`, `email_id`, `created_at`) VALUES
-(59, 'GP SMS', 9, 15, 500, '2023-07-31 00:00:00', '2025-07-31 00:00:00', '2025-07-16', '24', 15, 'SMS', '18', '', '2023-07-31 08:46:14'),
-(62, 'AP', 9, 4, 7, '2023-07-31 00:00:00', '2026-07-31 00:00:00', '2026-07-01', '36', 30, 'EMAIL', '', '17', '2023-07-31 09:03:16');
+INSERT INTO `provided_service` (`id`, `product_name`, `unit_id`, `customer_id`, `p_qty`, `purchase_date`, `expiry_date`, `renew_date`, `service_time`, `notify_time`, `notification_type`, `sms_id`, `email_id`, `auto_renew`, `created_at`) VALUES
+(59, 'GP SMS', 9, 15, 500, '2023-07-31', '2025-07-31', '2025-07-16', '24', '15', 'SMS', '18', '', 'NO', '2023-07-31 08:46:14'),
+(62, 'AP', 9, 4, 9, '2023-07-31', '2023-08-13', '2024-07-11', '12', '30', 'EMAIL', '', '17', 'YES', '2023-07-31 09:03:16'),
+(75, 'Domain', 9, 3, 44, '2023-08-08', '2023-08-13', '2024-07-25', '12', '15', 'SMS', '18', '', 'YES', '2023-08-08 09:49:42'),
+(76, 'Hosting', 9, 4, 43, '2023-08-08', '2027-08-08', '2027-07-09', '24', '30', 'SMS', '16', '', 'YES', '2023-08-08 09:58:01'),
+(77, 'Microsoft Email Service', 14, 16, 10, '2023-08-01', '2023-09-01', '2023-08-25', '1', '7', 'EMAIL', '', '17', 'YES', '2023-08-09 05:48:42'),
+(78, 'Domain', 14, 16, 3, '2023-08-09', '2023-11-09', '2023-10-25', '3', '15', 'SMS', '16', '', 'YES', '2023-08-09 09:46:40');
 
 -- --------------------------------------------------------
 
@@ -200,8 +206,8 @@ CREATE TABLE `units` (
 
 INSERT INTO `units` (`id`, `unit_name`, `unit_details`, `created_at`) VALUES
 (9, 'PCS', 'Product Pieces', '2023-05-27 11:53:55'),
-(10, 'Degree', 'Degree ', '2023-07-11 07:13:13'),
-(11, 'NOA', 'Number of account', '2023-07-13 09:00:26');
+(11, 'NOA', 'Number of account', '2023-07-13 09:00:26'),
+(14, 'License', 'License', '2023-08-09 05:47:46');
 
 -- --------------------------------------------------------
 
@@ -312,7 +318,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `mail_contents`
@@ -324,7 +330,7 @@ ALTER TABLE `mail_contents`
 -- AUTO_INCREMENT for table `provided_service`
 --
 ALTER TABLE `provided_service`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `services_mail`
@@ -354,7 +360,7 @@ ALTER TABLE `smtp`
 -- AUTO_INCREMENT for table `units`
 --
 ALTER TABLE `units`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `users`
