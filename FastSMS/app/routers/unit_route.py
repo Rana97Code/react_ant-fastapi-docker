@@ -79,28 +79,21 @@ async def create(unit:List[UnitCreateSchema], request: Request, db:Session=Depen
 
 
 @unit_router.put("/update_unit_array/{unit_id}")
-async def update(unit_id: str, request: Request, db:Session=Depends(get_db)): #data field define using schema and session manage
+async def update_array(unit_id: str, request: Request, db:Session=Depends(get_db)): #data field define using schema and session manage
 
-    # print(unit_id)
     y = unit_id.split(",")
-        # print(y)
     u=db.query(Unit).filter(Unit.id.in_(y)).all()
-
     name= jsonable_encoder(u)
     i = []
-    unt = []
-    for i in range(len(name)):
-        print(i)
-        unt.append({
-          "unit_name": name[i]["unit_name"],
-          "unit_details": name[i]["unit_details"] + '+1',
-          "id": name[i]["id"]
-        })
-        # u_l.dict(exclude_unset=True)
-        print(unt)
-    for row in unt:
-        print(row)
-        unit_list = [Unit(**row)]
-        db.execute(unit_list)
+    x = []
+    for i,x in enumerate(name):
+        unit_name = x["unit_name"],
+        unit_details = x["unit_details"] + "+" + x["unit_name"]
+
+        uu=db.query(Unit).filter(Unit.id == x["id"]).first()
+        uu.unit_name=unit_name
+        uu.unit_details=unit_details
+        print(jsonable_encoder(uu))
+        db.add(uu)
         db.commit()
     return {"Message":"Successfully Update"}

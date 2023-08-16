@@ -29,19 +29,6 @@ def create(p_p:ProServiceCreateSchema,db:Session=Depends(get_db)):
     db.add(srv)
     db.commit()
 
-    # service_id = srv.id
-    # ml_id = jsonable_encoder(p_p.mail_id)
-    # for i in range(len(ml_id)):
-    #         ml_id[i]["service_id"] = service_id
-    #         ml_id[i]["mail_id"] = ml_id
-    #     # print(line_data)
-    # for row in ml_id:
-    #         # print(row)
-    #         mail = [Service_mail(**row)]
-    #         db.add_all(mail)
-    #         db.commit()
-
-    # return {"id":srv.id}
     return {"Message":"Successfully Add"}
 
 @p_service_router.get("/Provided_services",response_model=List[ServiceProductSchema])
@@ -127,7 +114,7 @@ def get_u(pp_id:Annotated[list[str], Query()] = [62,75],db:Session=Depends(get_d
 
 
 
-@p_service_router.put("/update_service/{pp_id}" ,response_model=List[ProServiceCreateSchema])
+@p_service_router.put("/update_service/{pp_id}" )
 async def upd(pp_id:str, db:Session=Depends(get_db)):
     # try:
         print(pp_id)
@@ -136,30 +123,39 @@ async def upd(pp_id:str, db:Session=Depends(get_db)):
         u=db.query(Provided_service).filter(Provided_service.id.in_(y)).all()
         
         junit = jsonable_encoder(u)
-        print(junit)
+        # print(junit)
         i=[]
-        serv= []
-        for i in range(len(junit)):
-            serv.append({
-                # 'id' : junit[i]['id'],
-                'product_name' : junit[i]['product_name'],
-                'customer_id' : junit[i]['customer_id'],
-                'p_qty' : junit[i]['p_qty'],
-                'unit_id' : junit[i]['unit_id'],
-                'expiry_date' : datetime.strptime(junit[i]['purchase_date'], '%Y-%m-%d') + relativedelta(months=int(junit[i]['service_time'])),
-                'renew_date' : datetime.strptime(junit[i]['purchase_date'], '%Y-%m-%d').date() + relativedelta(months=int(junit[i]['service_time']))-relativedelta(days=int(junit[i]['notify_time'])),
-                'service_time' : junit[i]['service_time'],
-                'notify_time' : junit[i]['notify_time'],
-                'notification_type' : junit[i]['notification_type'],
-                'sms_id' : junit[i]['sms_id'],
-                'email_id' : junit[i]['email_id'],
-                'auto_renew' : junit[i]['auto_renew']
-            })
-        for row in serv:
-                print(row)
-                serv_li = [Provided_service(**row)]
-                db.add_all(serv_li)
-                db.commit()
+        x= []
+        # for i in range(len(junit)):
+        for i,x in enumerate(junit):
+            product_name = x['product_name'],
+            customer_id = x['customer_id'],
+            p_qty = x['p_qty'],
+            unit_id = x['unit_id'],
+            expiry_date = datetime.strptime(x['purchase_date'], '%Y-%m-%d') + relativedelta(months=int(x['service_time'])),
+            renew_date = datetime.strptime(x['purchase_date'], '%Y-%m-%d').date() + relativedelta(months=int(x['service_time']))-relativedelta(days=int(x['notify_time'])),
+            service_time = x['service_time'],
+            notify_time = x['notify_time'],
+            notification_type = x['notification_type'],
+            sms_id = x['sms_id'],
+            email_id = x['email_id'],
+            auto_renew = x['auto_renew']
+
+            ps=db.query(Provided_service).filter(Provided_service.id == x["id"]).first()
+            ps.product_name = product_name
+            ps.customer_id = customer_id
+            ps.p_qty = p_qty
+            ps.unit_id = unit_id
+            ps.expiry_date = expiry_date
+            ps.renew_date = renew_date
+            ps.service_time = service_time
+            ps.notify_time = notify_time
+            ps.notification_type = notification_type
+            ps.sms_id = sms_id
+            ps.email_id = email_id
+            ps.auto_renew = auto_renew
+            db.add(ps)
+            db.commit()
         return {"Message":"Successfully Update"}
     # except:
     #     return HTTPException(status_code=404,detail="Update Unsuccessfull")

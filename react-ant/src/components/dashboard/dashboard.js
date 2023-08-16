@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { LockOutlined,InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
-import { Layout, Table ,Card, Space, theme } from 'antd';
+import { Layout, Table ,Card, Space, theme, Row } from 'antd';
 import Sidebar from './sidebar';
 import Headers from './header';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
+
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -14,23 +15,7 @@ const {  Content } = Layout;
 function Dashb() {
   const params = useParams();   ///FOR Parameter Pass
   const { token: { colorBgContainer }, } = theme.useToken();
-
-  const [customer_id,setCust]=useState("");
-  const [product_name,setPro]=useState("");
-  const [p_qty,setQty]=useState("");
-  const [unit_id,setUnt]=useState("");
-  const [expiry_date,setEdate]=useState("");
-  const [service_time,setTime]=useState("");
-  const [notify_time,setNtime]=useState("");
-  const [notify_type,setNotifTyp]=useState("");
-  const [sms_id,setSmstitl]=useState("");
-  const [email_id,setEmltitl]=useState("");
-  const [auto_renewal,setAutorenew]=useState("");
-
-  // const notification_type= notify_type.toString();
-  // const auto_renew= auto_renewal.toString();
-  const purchase_date= expiry_date;
-
+  const navigate = useNavigate(); //for redirect
 
   const [ExpServicen, setExpireservn]= useState([]); 
   const [ExpService, setExpireserv]= useState([]); 
@@ -82,39 +67,15 @@ function Dashb() {
     const auto_id= s_id.toString();
     // const test = auto_id.replace("\\'", " ");
     console.log({auto_id});
-
-
-    let result = await fetch( `http://127.0.0.1:8000/get_Provided_services`,{
-      method: 'post',
-      body:JSON.stringify({"s_id":s_id}),
-      headers:{
-          'Content-type':'application/json',
+    if(auto_id){
+      let resu = await fetch(`http://127.0.0.1:8000/update_service/${auto_id}`,{
+          method: 'put',
+      });
+      if(resu.ok){
+        navigate('/')
       }
-    });
-    if(result.ok){
-    const data = await result.json();
-    console.warn(data);
-    setCust(data.customer_id)    
-    setPro(data.product_name)
-    setQty(data.p_qty)
-    setUnt(data.unit_id)
-    setEdate(data.expiry_date)
-    setTime(data.service_time)
-    setNtime(data.notify_time)
-    setNotifTyp(data.notification_type)
-    setSmstitl(data.sms_id)
-    setEmltitl(data.email_id)
-    setAutorenew(data.auto_renew)
     }
 
-    console.warn(customer_id, product_name, p_qty, unit_id, purchase_date, service_time, notify_time, notify_type, sms_id, email_id, auto_renewal);
-    let resu = await fetch(`http://127.0.0.1:8000/update_Provided_service/${auto_id}`,{
-        method: 'put',
-        body:JSON.stringify({customer_id, product_name, p_qty, unit_id, purchase_date, service_time, notify_time, notify_type, sms_id, email_id, auto_renewal}),
-        headers:{
-            'Content-type':'application/json',
-        }
-    });
 
   };
 
@@ -146,22 +107,24 @@ function Dashb() {
 
           <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, }} >
            
-          <Space direction="horizonal" >
-              <Card  title="Service Will Expired Soon"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ margin:20, width: 500, height: 380, background: '#08979c', overflow: 'hidden' }} >
-                <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Service Will Expired Soon: {ExpServicen}</h3>
-                <Table columns={excolumns}  dataSource={edata}  scroll={{ x: 400, y: 150, }} />
-              </Card>
-              <Card  title="Service List"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ margin:20, width: 500, height: 380, background: '#096dd9', overflow: 'hidden' }} >
-                <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Service : {serviceco}</h3>
-                <Table  columns={scolumns}  dataSource={sdata}  scroll={{ x: 400, y: 150, }} />
+            <Space direction="horizonal" >
+              <Row>
+                <Card  title="Service Will Expired Soon"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ margin:20, width: 500, height: 380, background: '#08979c', overflow: 'hidden' }} >
+                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Service Will Expired Soon: {ExpServicen}</h3>
+                  <Table columns={excolumns}  dataSource={edata}  scroll={{ x: 400, y: 150, }} />
+                </Card>
+                <Card  title="Service List"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ margin:20, width: 500, height: 380, background: '#096dd9', overflow: 'hidden' }} >
+                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Service : {serviceco}</h3>
+                  <Table  columns={scolumns}  dataSource={sdata}  scroll={{ x: 400, y: 150, }} />
 
-              </Card>
-              <Card  title="Customer List"  extra={<a  style={{color: 'black'}} href="/customer">More</a>}  style={{ margin:20, width: 500, height: 380, background: '#3f6600', overflow: 'hidden' }} >
-                <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Customer : {Customco}</h3>
-                <Table  columns={ccolumns}  dataSource={cdata}  scroll={{ x: 400, y: 150, }} />
-              </Card>
-    
-           </Space>
+                </Card>
+                <Card  title="Customer List"  extra={<a  style={{color: 'black'}} href="/customer">More</a>}  style={{ margin:20, width: 500, height: 380, background: '#3f6600', overflow: 'hidden' }} >
+                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Customer : {Customco}</h3>
+                  <Table  columns={ccolumns}  dataSource={cdata}  scroll={{ x: 400, y: 150, }} />
+                </Card>
+              </Row>
+            </Space>
+
           </Content>
 
      
