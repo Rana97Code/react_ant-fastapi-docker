@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { InfoCircleOutlined, UserOutlined, ArrowLeftOutlined, MailOutlined,MobileOutlined,BankOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, UserOutlined, ArrowLeftOutlined, MailOutlined,MobileOutlined,BankOutlined ,AimOutlined} from '@ant-design/icons';
 import { Button, Form, Input, Col, Row, Card, Tooltip, Space, Layout, theme, Tag  } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../dashboard/sidebar';
@@ -80,10 +80,10 @@ const onSubmit = async (e)=>{
      <Layout>
        <Headers />
 
-       <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, }} >
+       <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, overflow: "hidden" }} >
 
-
-        <Card bordered={false} style={{width: 500, height: 500, background: '#b5f5ec', marginTop: 50, marginLeft: 550, display: 'flex', justifyContent:'center', textAlign: 'center' }} >
+       <Space   style={{width: '100%', justifyContent: 'center'}}>
+        <Card className="myCard" bordered={false}  >
           <Space style={{ marginBottom: 30 }}>
             <Tag color="blue" style={{ width: 140, height: 25, textAlign: 'center'}}> Insert New Customer </Tag>
           </Space>
@@ -128,7 +128,7 @@ const onSubmit = async (e)=>{
               <Row>
                 <Col>
                   <Form.Item  name="customer_addr"  rules={[{ required: true,  message: 'Please input your Customer Address!', }, ]} >
-                    <Input prefix={<BankOutlined  className="site-form-item-icon" />} 
+                    <Input prefix={<AimOutlined  className="site-form-item-icon" />} 
                     suffix={ <Tooltip title="Enter Your Orginal User Name">
                         <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                       </Tooltip> }
@@ -158,8 +158,7 @@ const onSubmit = async (e)=>{
               <a href="/customer"><ArrowLeftOutlined />  Customer List</a>
           </Form>
         </Card>
-
-        
+      </Space> 
     </Content>
 
 

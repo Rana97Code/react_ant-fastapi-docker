@@ -105,7 +105,7 @@ function Dashb() {
         <Layout>
           <Headers />
 
-          <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, }} >
+          <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, overflow: "hidden" }} >
            
             <Space direction="horizonal" >
               <Row>

@@ -15,8 +15,6 @@ const Service = ()=> {
   const [serchText, setSerchtext]= useState("");
 
 
-
-
     const columns = [
         { title: 'Service Name',dataIndex: 's_name', filteredValue:[serchText],
            onFilter:(value,record) => {return String(record.s_name).toLocaleLowerCase().includes(value.toLocaleLowerCase()) || String(record.c_name).toLocaleLowerCase().includes(value.toLocaleLowerCase())}
@@ -83,7 +81,7 @@ const getService = async () => {
       <Layout>
         <Headers />
 
-        <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, }} >
+        <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, overflow: "hidden" }} >
           <Row style={{ float: "right", margin: 20}}>
             <Col>            
                 <Input.Search  placeholder="Search Services" onSearch={(value)=>{setSerchtext(value)}} onChange={(e) =>{setSerchtext(e.target.value)}} />
@@ -94,7 +92,6 @@ const getService = async () => {
           </Row>
           <Table  columns={columns}  dataSource={data}  scroll={{ x: 1500, y: 600, }} />
         </Content>
-
 
       </Layout>
     </Layout>  

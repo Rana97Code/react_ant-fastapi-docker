@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { LockOutlined,InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Col, Row, Card, Tooltip, Space, Tag  } from 'antd';
+import { Button, Checkbox, Form, Input, Col, Row, Card, Tooltip, Space, Tag, Typography  } from 'antd';
 import { useNavigate } from 'react-router-dom';
+const {Title, Text, Link } = Typography;
 
 
 function Signin() {
@@ -46,12 +47,16 @@ function Signin() {
 
 
   return (
-      <Card bordered={false} style={{width: 500, height: 300, marginTop: 150, marginLeft: 800, display: 'flex', justifyContent:'center', textAlign: 'center' }} >
-            <Space style={{ marginBottom: 30 }}>
-              <Tag color="blue" style={{ width: 80, height: 25, textAlign: 'center'}}> Log In </Tag>
-            </Space>
-        <Form  name="normal_login"  className="login-form"  initialValues={{ remember: true, }}  >
 
+
+    <Space style={{width: '100%', paddingTop: 60, justifyContent: 'center'}}>
+
+       <Card className="myCard">   
+
+        <Space style={{ marginBottom: 30 }}>
+              <Tag color="blue" style={{ width: 80, height: 25, textAlign: 'center'}}> Log In </Tag>
+        </Space>
+        <Form  name="normal_login"  className="login-form"  initialValues={{ remember: true, }}  >
             <Row>
               <Col>
                 <Form.Item  name="username"  rules={[{ required: true,  message: 'Please input your Username!', }, ]} >
@@ -85,10 +90,11 @@ function Signin() {
               <Button type="primary" htmlType="submit" onClick={handleLogin} className="login-form-button">
                 Log in
               </Button>
-              Or <a href="/signup">register now!</a>
+              Or <Link href="/signup">register now!</Link>
             </Form.Item>
         </Form>
       </Card>
+  </Space>
   );
 }
 

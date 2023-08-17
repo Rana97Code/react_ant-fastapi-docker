@@ -65,7 +65,7 @@ const getCustomer = async () => {
           <Layout>
             <Headers />
 
-            <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, }} >
+            <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, overflow: "hidden" }} >
               <Button style={{ float: 'right', margin: 20}} type="primary" href="http://localhost:3000/add_sms">Add SMS API</Button>
 
               <Table  columns={columns}  dataSource={data}  scroll={{ x: 1500, y: 600, }} />

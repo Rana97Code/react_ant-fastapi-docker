@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../dashboard/sidebar';
 import Headers from '../dashboard/header';
 import _ from 'lodash';
+import { relativeTimeRounding } from "moment/moment";
 
 
 const { Content } = Layout;
@@ -163,154 +164,157 @@ const smscheck = async (e)=>{
    <Headers />
 
 
-   <Content style={{ margin: '24px 16px', padding: 24, minHeight: 350, background: colorBgContainer, }} >
-    <Card bordered={false} style={{width: 500, height: 620, background: '#f0f0f0', marginTop: 50, marginLeft: 550, display: 'flex', justifyContent:'center', textAlign: 'center' }} >
-      <Space style={{ marginBottom: 30 }}>
-        <Tag color="blue" style={{ width: 140, height: 25, textAlign: 'center'}}> Add New Service </Tag>
-      </Space>
-      <Form  name="normal_login"  className="login-form"  initialValues={{ remember: true, }}  >
-          <Row>
-              <Col>
-                <Select showSearch style={{width: 280 }} placeholder="Select Customer "  onChange={(e)=>setCust(e)} optionLabelProp="label"  >
-                  <Option selected ><Space> Select Customer Name </Space> </Option>
-                  {Customer.map(customer => (
-                    <Option key={customer.value} value={customer.id} label={customer.customer_name}><Space> {customer.customer_name} </Space> </Option>
-                  )) }
-                </Select>
-              {/* </Form.Item> */}
-            </Col>
-          </Row>
+   <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, overflow: "hidden" }} >
 
-        <br />
+    <Space style={{width: '100%', justifyContent: 'center'}}>
+      <Card className="myServiceCard" bordered={false} >
+        <Space style={{ marginBottom: 30 }}>
+          <Tag color="blue" style={{ width: 140, height: 25, textAlign: 'center'}}> Add New Service </Tag>
+        </Space>
+        <Form  name="normal_login"  className="login-form"  initialValues={{ remember: true, }}  >
+            <Row>
+                <Col>
+                  <Select showSearch className="inputWi" placeholder="Select Customer "  onChange={(e)=>setCust(e)} optionLabelProp="label"  >
+                    <Option selected ><Space> Select Customer Name </Space> </Option>
+                    {Customer.map(customer => (
+                      <Option key={customer.value} value={customer.id} label={customer.customer_name}><Space> {customer.customer_name} </Space> </Option>
+                    )) }
+                  </Select>
+                {/* </Form.Item> */}
+              </Col>
+            </Row>
 
-        <Row>
-          <Col>
-            <Form.Item style={{width: 280 }} name="service_name"  rules={[{ required: true,  message: 'Please input Service Name!', }, ]} >
-              <Input prefix={<DiffOutlined className="site-form-item-icon" />} 
-              suffix={ <Tooltip title="Enter Service Name">
-                  <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                </Tooltip> }
-                onChange={(e)=>setPro(e.target.value)} placeholder="Service Name" />
-            </Form.Item>
-          </Col>
-        </Row>
-
-
-        <Row>
-          <Col>
-            {/* <Form.Item style={{width: 140, position: 'relative', display: 'block' }} name="service_qty"  rules={[{ required: true,  message: 'Please input Service Name!', }, ]} > */}
-                <Input style={{width: 180 }} prefix={<PlusOutlined className="site-form-item-icon" />} 
-                onChange={(e)=>setQty(e.target.value)} placeholder="Service Quantity" />
-
-                 <Select showSearch style={{width: 100 }} placeholder="Units"  onChange={(e)=>setUnt(e)} optionLabelProp="label"  >
-                  <Option selected ><Space> Select Unit </Space> </Option>
-                  {Unit.map(unit => (
-                    <Option key={unit.value} value={unit.id} label={unit.unit_name}><Space> {unit.unit_name} </Space> </Option>
-                  )) }
-                </Select>
-                
-            {/* </Form.Item> */}
-          </Col>
-        </Row>
-<br></br>
-        <Row>
-          <Col>
-            <Form.Item style={{width: 280 }} name="service_start"  rules={[{ required: true, message: 'Please input Service Date!', }, ]} >
-              <Input type="date" 
-                onChange={(e)=>setDate(e.target.value)}  />
-            </Form.Item>
-          </Col>
-        </Row>
-
-
-        <Row>
-            <Col>
-                <Select  showSearch style={{width: 280 }} placeholder="Service Duration" onChange={(e)=>setTime(e)} optionLabelProp="label"  >
-                  <Option selected ><Space> Select Duration </Space> </Option>
-                  <Option value="1" label="1 Month"><Space> 1 Month </Space> </Option>
-                  <Option value="3" label="3 Month"><Space> 3 Month </Space> </Option>
-                  <Option value="6" label="6 Month"><Space> 6 Month </Space> </Option>
-                  <Option value="12" label="1 Year"><Space> 1 Year </Space> </Option>
-                  <Option value="24" label="2 Year"><Space> 2 Year </Space> </Option>
-                  <Option value="36" label="3 Year"><Space> 3 Year </Space> </Option>
-                  <Option value="60" label="5 Year"><Space> 5 Year </Space> </Option>
-                </Select>
-            </Col>
-          </Row>
-
-            <br />
-
-        <Row>
-            <Col>
-                <Select showSearch style={{width: 280 }} placeholder="Notify Before Expire"  onChange={(e)=>setNotif(e)} optionLabelProp="label"  >
-                  <Option selected ><Space> Notify Before </Space> </Option>
-                  <Option value="7" label="7 Days"><Space> 7 Days </Space> </Option>
-                  <Option value="15" label="15 Days"><Space> 15 Days </Space> </Option>
-                  <Option value="30" label="1 Month"><Space> 1 Month </Space> </Option>
-                </Select>
-            </Col>
-          </Row>
           <br />
 
           <Row>
             <Col>
-            <Checkbox.Group  onChange={(e)=>setNotifTyp(e)} >
-                              {/* Notify Via: */}
-                <Row>
-                  <Col span={12} >
-                    <Checkbox onClick={smscheck} value="SMS">SMS </Checkbox>
-                    <hr />
-                    <Select disabled={smsdisabled} style={{width: 140 }} showSearch placeholder="SMS Title"  onChange={(e)=>setSmstitl(e)} optionLabelProp="label" >
-                      <Option selected ><Space> Select </Space> </Option>
-                      {Smscontent.map(content => (
-                        <Option key={content.value} value={content.id} label={content.mail_title}><Space> {content.mail_title} </Space> </Option>
-                      )) }
-                    </Select>
-                  </Col>
-                {/* </Row>
-                <Row> */}
-                <br />
-                <br />
-
-
-                  <Col span={12} >
-                    <Checkbox onClick={emlcheck} value="EMAIL">EMAIL</Checkbox>
-                    <hr />
-                    <Select disabled={emaildisabled} style={{width: 140 }} showSearch placeholder="Email Title"  onChange={(e)=>setEmltitl(e)} optionLabelProp="label" >
-                      <Option selected ><Space> Select </Space> </Option>
-                      {Emlcontent.map(content => (
-                        <Option key={content.value} value={content.id} label={content.mail_title}><Space> {content.mail_title} </Space> </Option>
-                      )) }
-                    </Select>
-                  </Col>
-                 
-                </Row>
-             </Checkbox.Group>
+              <Form.Item className="inputWi" name="service_name"  rules={[{ required: true,  message: 'Please input Service Name!', }, ]} >
+                <Input prefix={<DiffOutlined className="site-form-item-icon" />} 
+                suffix={ <Tooltip title="Enter Service Name">
+                    <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                  </Tooltip> }
+                  onChange={(e)=>setPro(e.target.value)} placeholder="Service Name" />
+              </Form.Item>
             </Col>
-         </Row>
-         <br />
-
-          <Row>
-          <Col>
-            <Checkbox.Group  onChange={(e)=>setAutorenew(e)} >
-              <Checkbox value="YES" > Auto-Renewal </Checkbox>
-              <Checkbox value="NO" > Not Auto-Renewal </Checkbox>
-
-            </Checkbox.Group>
-          </Col>
           </Row>
 
 
-           <br />
+          <Row>
+            <Col>
+              {/* <Form.Item style={{width: 140, position: 'relative', display: 'block' }} name="service_qty"  rules={[{ required: true,  message: 'Please input Service Name!', }, ]} > */}
+                  <Input className="inputQuant" prefix={<PlusOutlined className="site-form-item-icon" />} 
+                  onChange={(e)=>setQty(e.target.value)} placeholder="Service Quantity" />
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" onClick={onSubmit} className="login-form-button">
-              Submit
-            </Button>
-          </Form.Item>
-          <a href="/service"><ArrowLeftOutlined />  Service List</a>
-      </Form>
-    </Card>
+                  <Select showSearch style={{width: 100 }} placeholder="Units"  onChange={(e)=>setUnt(e)} optionLabelProp="label"  >
+                    <Option selected ><Space> Select Unit </Space> </Option>
+                    {Unit.map(unit => (
+                      <Option key={unit.value} value={unit.id} label={unit.unit_name}><Space> {unit.unit_name} </Space> </Option>
+                    )) }
+                  </Select>
+                  
+              {/* </Form.Item> */}
+            </Col>
+          </Row>
+          <br></br>
+          <Row>
+            <Col>
+              <Form.Item className="inputWi" name="service_start"  rules={[{ required: true, message: 'Please input Service Date!', }, ]} >
+                <Input type="date" 
+                  onChange={(e)=>setDate(e.target.value)}  />
+              </Form.Item>
+            </Col>
+          </Row>
+
+
+          <Row>
+              <Col>
+                  <Select  showSearch className="inputWi" placeholder="Service Duration" onChange={(e)=>setTime(e)} optionLabelProp="label"  >
+                    <Option selected ><Space> Select Duration </Space> </Option>
+                    <Option value="1" label="1 Month"><Space> 1 Month </Space> </Option>
+                    <Option value="3" label="3 Month"><Space> 3 Month </Space> </Option>
+                    <Option value="6" label="6 Month"><Space> 6 Month </Space> </Option>
+                    <Option value="12" label="1 Year"><Space> 1 Year </Space> </Option>
+                    <Option value="24" label="2 Year"><Space> 2 Year </Space> </Option>
+                    <Option value="36" label="3 Year"><Space> 3 Year </Space> </Option>
+                    <Option value="60" label="5 Year"><Space> 5 Year </Space> </Option>
+                  </Select>
+              </Col>
+            </Row>
+
+              <br />
+
+          <Row>
+              <Col>
+                  <Select showSearch className="inputWi" placeholder="Notify Before Expire"  onChange={(e)=>setNotif(e)} optionLabelProp="label"  >
+                    <Option selected ><Space> Notify Before </Space> </Option>
+                    <Option value="7" label="7 Days"><Space> 7 Days </Space> </Option>
+                    <Option value="15" label="15 Days"><Space> 15 Days </Space> </Option>
+                    <Option value="30" label="1 Month"><Space> 1 Month </Space> </Option>
+                  </Select>
+              </Col>
+            </Row>
+            <br />
+
+            <Row >
+              <Col>
+              <Checkbox.Group  onChange={(e)=>setNotifTyp(e)} >
+                                {/* Notify Via: */}
+                  <Row >
+                    <Col span={12} >
+                      <Checkbox onClick={smscheck} value="SMS">SMS </Checkbox>
+                      <hr />
+                      <Select disabled={smsdisabled} className="mTitle" showSearch placeholder="SMS Title"  onChange={(e)=>setSmstitl(e)} optionLabelProp="label" >
+                        <Option selected ><Space> Select </Space> </Option>
+                        {Smscontent.map(content => (
+                          <Option key={content.value} value={content.id} label={content.mail_title}><Space> {content.mail_title} </Space> </Option>
+                        )) }
+                      </Select>
+                    </Col>
+                  {/* </Row>
+                  <Row> */}
+                  <br />
+                  <br />
+
+
+                    <Col span={12} >
+                      <Checkbox onClick={emlcheck} value="EMAIL">EMAIL</Checkbox>
+                      <hr />
+                      <Select disabled={emaildisabled} className="mTitle" showSearch placeholder="Email Title"  onChange={(e)=>setEmltitl(e)} optionLabelProp="label" >
+                        <Option selected ><Space> Select </Space> </Option>
+                        {Emlcontent.map(content => (
+                          <Option key={content.value} value={content.id} label={content.mail_title}><Space> {content.mail_title} </Space> </Option>
+                        )) }
+                      </Select>
+                    </Col>
+                  
+                  </Row>
+              </Checkbox.Group>
+              </Col>
+          </Row>
+          <br />
+
+            <Row>
+            <Col>
+              <Checkbox.Group  onChange={(e)=>setAutorenew(e)} >
+                <Checkbox value="YES" > Auto-Renewal </Checkbox>
+                <Checkbox value="NO" > Not Auto-Renewal </Checkbox>
+              </Checkbox.Group>
+            </Col>
+            </Row>
+
+
+            <br />
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit" onClick={onSubmit} className="login-form-button">
+                Submit
+              </Button>
+            </Form.Item>
+            <a href="/service"><ArrowLeftOutlined />  Service List</a>
+        </Form>
+      </Card>
+    </Space>
+
 </Content>
 
 

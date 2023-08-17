@@ -97,11 +97,11 @@ const onSubmit = async (e)=>{
      <Layout>
        <Headers />
 
-       <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, }} >
+       <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, overflow: "hidden" }} >
 
-
-        <Card bordered={false} style={{width: 500, height: 500, background: '#b5f5ec', marginTop: 50, marginLeft: 550, display: 'flex', justifyContent:'center', textAlign: 'center' }} >
-        <Space style={{ marginBottom: 30 }}>
+      <Space style={{width: '100%', justifyContent: 'center'}}>
+        <Card className="myCard" bordered={false} >
+          <Space style={{ marginBottom: 30 }}>
             <Tag color="blue" style={{ width: 140, height: 25, textAlign: 'center'}}> Edit Unit </Tag>
           </Space>
           <Form  name="normal_login"  className="login-form"  initialValues={{ remember: true, }}  >
@@ -138,8 +138,7 @@ const onSubmit = async (e)=>{
               <a href="/units"><ArrowLeftOutlined />  Unit List</a>
           </Form>
         </Card>
-
-        
+      </Space>
     </Content>
 
 

@@ -76,6 +76,7 @@ const onSubmit = async (e)=>{
       }else{
         navigate('/add_notification')
       }
+      
 
 }
 
@@ -87,8 +88,10 @@ const onSubmit = async (e)=>{
        <Headers />
 
 
-       <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, }} >
-        <Card bordered={false} style={{width: 500, height: 400, background: '#b5f5ec', marginTop: 50, marginLeft: 550, display: 'flex', justifyContent:'center', textAlign: 'center' }} >
+       <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, overflow: "hidden" }} >
+
+       <Space   style={{width: '100%', justifyContent: 'center'}}>
+        <Card className="myCard" bordered={false}  >
           <Space style={{ marginBottom: 30 }}>
             <Tag color="blue" style={{ width: 140, height: 25, textAlign: 'center'}}> Insert New Notification </Tag>
           </Space>
@@ -97,7 +100,7 @@ const onSubmit = async (e)=>{
                   <Col>
                   {/* <Form.Item  label=" Notification Type" > */}
 
-                    <Select showSearch style={{width: 280 }} placeholder="Select Notification Type"  onChange={(e)=>setType(e)} optionLabelProp="label"  >
+                    <Select showSearch className="inputWi" placeholder="Select Notification Type"  onChange={(e)=>setType(e)} optionLabelProp="label"  >
                       <Option selected ><Space> Select Notification Type </Space> </Option>
                       <Option value="SMS" label="SMS"><Space> SMS </Space> </Option>
                       <Option value="EMAIL" label="EMAIL"><Space> EMAIL </Space> </Option>
@@ -111,7 +114,7 @@ const onSubmit = async (e)=>{
             <Row>
                   <Col>
                   {/* <Form.Item  label=" Notification Type" > */}
-                  <Input  style={{width: 280 }} prefix={<InsertRowAboveOutlined className="site-form-item-icon" />} 
+                  <Input  className="inputWi" prefix={<InsertRowAboveOutlined className="site-form-item-icon" />} 
                     suffix={ <Tooltip title="Enter Mail Title">
                         <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                       </Tooltip> }
@@ -128,7 +131,7 @@ const onSubmit = async (e)=>{
                 <Col>
                   {/* <Form.Item  label="Notification Content" > */}
                     <Form.Item  name="notification_content" >
-                      <TextArea style={{ width: 280 }} placeholder="Notification Content" autoSize={{ minRows: 2, maxRows: 12,  }} onChange={(e)=>setContent(e.target.value)} />
+                      <TextArea className="inputWi" placeholder="Notification Content" autoSize={{ minRows: 2, maxRows: 12,  }} onChange={(e)=>setContent(e.target.value)} />
                     </Form.Item>
                   {/* </Form.Item> */}
                 </Col>
@@ -142,6 +145,7 @@ const onSubmit = async (e)=>{
               <a href="/notification"><ArrowLeftOutlined />  Notification List</a>
           </Form>
         </Card>
+      </Space>
     </Content>
 
 

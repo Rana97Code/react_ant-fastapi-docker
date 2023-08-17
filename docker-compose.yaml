@@ -16,10 +16,10 @@ services:
 
   frontend:
     build:
-      context: ./react-front
+      context: ./react-ant
       dockerfile: Dockerfile
     volumes:
-      - "./react-front:/app"
+      - "./react-ant:/app"
       - /app/node_modules
     ports:
       - 3000:3000
@@ -28,16 +28,14 @@ services:
       - backend
 
   db:
-    image: mysql:8.0.21
+    image: mysql
     command: --default-authentication-plugin=caching_sha2_password
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      # MYSQL_ROOT_PASSWORD: ""
-      # MYSQL_ALLOW_EMPTY_PASSWORD: yes
+
     volumes:
-      # - ./db:/docker-entrypoint-initdb.d/:ro
       - mydatabase:/var/lib/mysql
 
   pmyadmin:

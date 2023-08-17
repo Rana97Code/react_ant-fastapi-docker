@@ -38,3 +38,61 @@ html, body { margin: 0; }
     transform: rotate(360deg);
   }
 }
+
+
+
+/* mediaquery by rana */
+
+.myCard{
+  width: 480px;
+  height: auto;
+  background-color: #c0d1cf;
+  margin-top: 50px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+
+}
+
+.myServiceCard{
+  width: 480px;
+  height: 670px;
+  background-color: #c0d1cf;
+  margin-top: 50px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+}
+.inputQuant{
+  width: 180px;
+}
+.mTitle{
+  width: 140px;
+}
+
+.inputWi{
+  width: 280px;
+}
+
+@media( 720px >= width){
+  .myCard {
+    width: 240px;
+    height: auto;
+  }
+  .myServiceCard{
+    width: 250px;
+    height: auto;
+  }
+  .inputWi{
+    width: 180px;
+  }
+  .mTitle{
+    width: 100px;
+  }
+  .inputQuant{
+    width: 80px;
+  }
+
+}
+
+
