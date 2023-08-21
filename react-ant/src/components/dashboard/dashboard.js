@@ -109,18 +109,18 @@ function Dashb() {
            
             <Space direction="horizonal" >
               <Row>
-                <Card  title="Service Will Expired Soon"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ margin:20, width: 500, height: 380, background: '#08979c', overflow: 'hidden' }} >
-                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Service Will Expired Soon: {ExpServicen}</h3>
-                  <Table columns={excolumns}  dataSource={edata}  scroll={{ x: 400, y: 150, }} />
+                <Card className="dCard" title="Services will Expire Soon"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ background: '#08979c', overflow: 'hidden' }} >
+                  <h3 style={{color: 'white', paddingBottom: 8}}>Services will be Expired: {ExpServicen}</h3>
+                  <Table className="dTable" columns={excolumns}  dataSource={edata}  scroll={{ x: 400, y: 150, }} />
                 </Card>
-                <Card  title="Service List"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ margin:20, width: 500, height: 380, background: '#096dd9', overflow: 'hidden' }} >
+                <Card className="dCard" title="Service List"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ background: '#096dd9', overflow: 'hidden' }} >
                   <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Service : {serviceco}</h3>
-                  <Table  columns={scolumns}  dataSource={sdata}  scroll={{ x: 400, y: 150, }} />
+                  <Table className="dTable" columns={scolumns}  dataSource={sdata}  scroll={{ x: 400, y: 150, }} />
 
                 </Card>
-                <Card  title="Customer List"  extra={<a  style={{color: 'black'}} href="/customer">More</a>}  style={{ margin:20, width: 500, height: 380, background: '#3f6600', overflow: 'hidden' }} >
+                <Card className="dCard" title="Customer List"  extra={<a  style={{color: 'black'}} href="/customer">More</a>}  style={{ background: '#3f6600', overflow: 'hidden' }} >
                   <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Customer : {Customco}</h3>
-                  <Table  columns={ccolumns}  dataSource={cdata}  scroll={{ x: 400, y: 150, }} />
+                  <Table className="dTable" columns={ccolumns}  dataSource={cdata}  scroll={{ x: 400, y: 150, }} />
                 </Card>
               </Row>
             </Space>

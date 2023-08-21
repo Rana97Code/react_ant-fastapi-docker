@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SearchOutlined } from '@ant-design/icons';
 import { Layout,Input, theme,Table,Button ,Space, Col, Row,  } from 'antd';
+import _ from 'lodash';
 
 import Sidebar from '../dashboard/sidebar';
 import Headers from '../dashboard/header';
@@ -33,6 +34,16 @@ const Service = ()=> {
           ),
         }
       ];
+
+      
+        const s_time = ServiceProd.map((service)=>service.service_time);
+        const st=[]
+        if(s_time> 12){
+          st=s_time/12 + "Year"
+          console.log(st);
+        }
+        console.log(st);
+
 
         const data = [];
         ServiceProd.map((service) =>[ data.push({s_name:service.product_name, c_name:service.customer_name,qty:service.p_qty + service.unit_name,

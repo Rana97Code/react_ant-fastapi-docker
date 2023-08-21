@@ -1,6 +1,7 @@
 import React, { useState  } from 'react';
-import { CommentOutlined,AppstoreOutlined ,  MenuFoldOutlined , MenuUnfoldOutlined, PlusOutlined,SettingOutlined, CreditCardOutlined ,UsergroupAddOutlined,DeploymentUnitOutlined  } from '@ant-design/icons';
-import { Layout, Menu,Anchor, Button } from 'antd';
+import { AppstoreOutlined ,  MenuFoldOutlined , MenuUnfoldOutlined, PlusOutlined,SettingOutlined, CreditCardOutlined ,UsergroupAddOutlined,DeploymentUnitOutlined  } from '@ant-design/icons';
+import { Layout, Menu,Anchor, Button, Image  } from 'antd';
+
 const { Link } = Anchor;
 const { Sider } = Layout;
 
@@ -14,6 +15,7 @@ const Sidebar = () => {
 
   return (
       <Sider trigger={null} collapsible collapsed={collapsed} >
+          <Image  width={200} height={65} style={{}} src="/images/logo.jpg" />
 
           <Button type="text" icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
@@ -27,7 +29,7 @@ const Sidebar = () => {
               { key: '3',icon: <Link href="/customer"> <UsergroupAddOutlined /> &emsp;  Customers </Link>},
               { key: '3',icon: <Link href="/units"> <DeploymentUnitOutlined /> &emsp;  Units </Link>},
               { key: '4',icon: <Link  href="/service" > <PlusOutlined /> &emsp;  Services </Link >},
-              getItem('Settings', 'sub4',    <SettingOutlined />, [
+              getItem('Settings', 'sub4',  <SettingOutlined />, [
                 getItem( <Link  href="/sms" >SMS API</Link >),
                 getItem(<Link  href="/smtp" >SMTP</Link >),
               

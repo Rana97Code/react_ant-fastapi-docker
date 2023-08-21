@@ -74,6 +74,12 @@ html, body { margin: 0; }
   width: 280px;
 }
 
+.dCard{
+  margin: 20px;
+  width: 500px;
+  height: 380px;
+}
+
 @media( 720px >= width){
   .myCard {
     width: 240px;
@@ -92,6 +98,12 @@ html, body { margin: 0; }
   .inputQuant{
     width: 80px;
   }
+  .dCard{
+    margin: 20px;
+    width: 300px;
+    height: 110px;
+  }
+
 
 }
 
