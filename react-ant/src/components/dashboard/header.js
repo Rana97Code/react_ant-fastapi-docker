@@ -1,6 +1,6 @@
 import React, { useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserOutlined  } from '@ant-design/icons';
+import { UserOutlined, MailOutlined, LogoutOutlined  } from '@ant-design/icons';
 import { Layout, Dropdown,  Button, theme,Space } from 'antd';
 import '../../App.css';
 import jwtDecode from 'jwt-decode'
@@ -20,11 +20,16 @@ const Headers = () => {
 
   useEffect(() =>{
 
+    const auth= JSON.parse(localStorage.getItem('user'));
+    setProfile(auth)
+
+
     // For Auto Refresh
     const interval = setInterval(() => {
 
+      const user= JSON.parse(localStorage.getItem('user'));
       const token = localStorage.getItem('usertoken');
-      if(token){
+      if(token&&user){
         const jwt = jwtDecode(token);
         var current_time = Date.now() / 1000;
         if ( jwt.exp < current_time) {
@@ -32,24 +37,21 @@ const Headers = () => {
         }else{
           console.log("Token is Valid")
         }
-      }
-
-      const auth= JSON.parse(localStorage.getItem('user'));
-      setProfile(auth)
-      if(!auth){
+      }else{
         navigate("/signin")
       }
-
      },60*1000);
      return () => clearInterval(interval);
+
+
     
   }, [])
 
 
   const items = [
     { label: 'User Name',  key: '3', icon: <UserOutlined />, danger: true,disabled: true },
-    { label: 'User Email',  key: '4',  icon: <UserOutlined />,  danger: true,disabled: true, },
-    { label: 'Log Out',  key: '4', icon: <UserOutlined />, danger: true, },
+    { label: profile,  key: '4',  icon: <MailOutlined />,  danger: true,disabled: true, },
+    { label: 'Log Out',  key: '4', icon: <LogoutOutlined />, danger: true, },
   ];
   
 

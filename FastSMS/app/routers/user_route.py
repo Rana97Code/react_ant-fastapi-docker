@@ -106,7 +106,7 @@ async def generate_token(signin_request: SigninRequest,  db:Session=Depends(get_
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=30)
+    access_token_expires = timedelta(minutes=20)
     access_token = create_token( data={"user_email": user.user_email}, expires_delta=access_token_expires )
     return {"access_token": access_token, "user_email": user.user_email, "token_type": "bearer"}
 

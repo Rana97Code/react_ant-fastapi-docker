@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Aug 13, 2023 at 11:14 AM
+-- Generation Time: Aug 22, 2023 at 11:41 AM
 -- Server version: 8.0.21
 -- PHP Version: 8.1.17
 
@@ -43,7 +43,7 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`id`, `customer_name`, `customer_email`, `customer_phone`, `customer_address`, `company_name`, `created_at`) VALUES
 (3, 'space x', 'space@twitter.com', '77827339', 'Los Angelious', 'Space X America', NULL),
-(4, 'Xens ad', 'xens@email.com', '857554736543', 'Korea', 'Korean Company', NULL),
+(4, 'Xens ax', 'xens@email.com', '857554736543', 'Korea', 'Korean Company', NULL),
 (5, 'Bill Gates', 'billgates@email.com', '8576364563', 'America', 'Microsoft', NULL),
 (15, 'G.P.', 'gp@email.com', '0170000000', 'Bosundhara ', 'Grameen Phone', NULL),
 (16, 'MD. Babor Ali', 'babor@bmitsolutionsltd.com', '01716462613', '31 Lakedrive road', 'Cyber Trust', NULL);
@@ -103,47 +103,9 @@ CREATE TABLE `provided_service` (
 
 INSERT INTO `provided_service` (`id`, `product_name`, `unit_id`, `customer_id`, `p_qty`, `purchase_date`, `expiry_date`, `renew_date`, `service_time`, `notify_time`, `notification_type`, `sms_id`, `email_id`, `auto_renew`, `created_at`) VALUES
 (59, 'GP SMS', 9, 15, 500, '2023-07-31', '2025-07-31', '2025-07-16', '24', '15', 'SMS', '18', '', 'NO', '2023-07-31 08:46:14'),
-(62, 'AP', 9, 4, 9, '2023-07-31', '2023-08-13', '2024-07-11', '12', '30', 'EMAIL', '', '17', 'YES', '2023-07-31 09:03:16'),
-(75, 'Domain', 9, 3, 44, '2023-08-08', '2023-08-13', '2024-07-25', '12', '15', 'SMS', '18', '', 'YES', '2023-08-08 09:49:42'),
-(76, 'Hosting', 9, 4, 43, '2023-08-08', '2027-08-08', '2027-07-09', '24', '30', 'SMS', '16', '', 'YES', '2023-08-08 09:58:01'),
+(62, 'AP', 9, 4, 9, '2023-07-31', '2024-07-31', '2024-07-01', '12', '30', 'EMAIL', '', '17', 'YES', '2023-07-31 09:03:16'),
 (77, 'Microsoft Email Service', 14, 16, 10, '2023-08-01', '2023-09-01', '2023-08-25', '1', '7', 'EMAIL', '', '17', 'YES', '2023-08-09 05:48:42'),
 (78, 'Domain', 14, 16, 3, '2023-08-09', '2023-11-09', '2023-10-25', '3', '15', 'SMS', '16', '', 'YES', '2023-08-09 09:46:40');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `services_mail`
---
-
-CREATE TABLE `services_mail` (
-  `id` int NOT NULL,
-  `service_id` int NOT NULL,
-  `mail_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `mail_id` int NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `service_time`
---
-
-CREATE TABLE `service_time` (
-  `id` int NOT NULL,
-  `year` int DEFAULT NULL,
-  `month` int DEFAULT NULL,
-  `service_details` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `service_time`
---
-
-INSERT INTO `service_time` (`id`, `year`, `month`, `service_details`) VALUES
-(1, 10, 4, '10 Year based'),
-(2, 5, 3, '5 Year based'),
-(7, 8, 6, 'Long time service');
 
 -- --------------------------------------------------------
 
@@ -205,9 +167,9 @@ CREATE TABLE `units` (
 --
 
 INSERT INTO `units` (`id`, `unit_name`, `unit_details`, `created_at`) VALUES
-(9, 'PCS', 'Product Pieces', '2023-05-27 11:53:55'),
-(11, 'NOA', 'Number of account', '2023-07-13 09:00:26'),
-(14, 'License', 'License', '2023-08-09 05:47:46');
+(9, 'PCS', 'Product Pieces', '2023-08-17 08:48:38'),
+(11, 'NOA', 'Number of account', '2023-08-17 08:48:44'),
+(14, 'License', 'License', '2023-08-16 08:50:48');
 
 -- --------------------------------------------------------
 
@@ -231,8 +193,6 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_name`, `user_phone`, `user_type`, `user_email`, `user_password`, `confirm_password`, `created_at`) VALUES
-(2, 'arnab', '01681081476', NULL, 'arnab@bmitsolutionsltd.com', '$2b$12$m4A5GeQ..PNrNNNEl1./1uho8UvMRcHxcK3uyj4aoYXwH7zvn7V9C', '$2b$12$m4A5GeQ..PNrNNNEl1./1uho8UvMRcHxcK3uyj4aoYXwH7zvn7V9C', NULL),
-(6, 'peuli', '53436526432', NULL, 'peuli@gmail.com', '$2b$12$1vaBuxMf4QCsu85QmJe7VejrwYV4aNWEyfcENC7hoD8C.Mjl3Y9N6', '$2b$12$1vaBuxMf4QCsu85QmJe7VejrwYV4aNWEyfcENC7hoD8C.Mjl3Y9N6', NULL),
 (10, 'rana@', '6254514334', NULL, 'rana@email.com', '$2b$12$o/vB6TwCN4UNBT2lWaY0i.3MrqS8q.u7BgZuJazY5z1IP2KFUOaEi', '$2b$12$o/vB6TwCN4UNBT2lWaY0i.3MrqS8q.u7BgZuJazY5z1IP2KFUOaEi', NULL);
 
 --
@@ -256,25 +216,6 @@ ALTER TABLE `mail_contents`
 --
 ALTER TABLE `provided_service`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `services_mail`
---
-ALTER TABLE `services_mail`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `ix_products_unit_id` (`service_id`),
-  ADD KEY `ix_products_id` (`id`),
-  ADD KEY `ix_products_product_qty` (`mail_id`),
-  ADD KEY `ix_products_product_name` (`mail_type`);
-
---
--- Indexes for table `service_time`
---
-ALTER TABLE `service_time`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `ix_Service_time_service_details` (`service_details`),
-  ADD UNIQUE KEY `ix_Service_time_year` (`year`),
-  ADD KEY `ix_Service_time_id` (`id`);
 
 --
 -- Indexes for table `sms_api`
@@ -330,19 +271,7 @@ ALTER TABLE `mail_contents`
 -- AUTO_INCREMENT for table `provided_service`
 --
 ALTER TABLE `provided_service`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
-
---
--- AUTO_INCREMENT for table `services_mail`
---
-ALTER TABLE `services_mail`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `service_time`
---
-ALTER TABLE `service_time`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `sms_api`
@@ -360,13 +289,13 @@ ALTER TABLE `smtp`
 -- AUTO_INCREMENT for table `units`
 --
 ALTER TABLE `units`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

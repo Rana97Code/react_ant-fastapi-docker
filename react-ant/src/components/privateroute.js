@@ -10,7 +10,7 @@ const PrivateRoute=()=>{
     //     // next(action);
     //     localStorage.clear();
     //   }
-    return auth?<Outlet />:<Navigate to="/signin" />
+    return auth&&token?<Outlet />:<Navigate to="/signin" />
 }
 
 export default PrivateRoute;

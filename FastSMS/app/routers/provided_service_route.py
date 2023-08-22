@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_, and_
 from app.models.provided_service import ProServiceCreateSchema,ServiceProductSchema,ServiceProductIdArray,Provided_service
 from app.models.mail_content import MailContent
-from app.models.service_mail import Service_mail
 from app.models.customers import Customer
 from app.models.units import Unit
 from app.config import engine, Base, SessionLocal, get_db

@@ -6,7 +6,7 @@ from app.config import engine, Base
 #import routers
 from app.routers.user_route import user_router
 from app.routers.customer_route import customer_router
-from app.routers.servicetime_route import servicetime_router
+# from app.routers.servicetime_route import servicetime_router
 from app.routers.unit_route import unit_router
 from app.routers.smtp_route import smtp_router
 from app.routers.sms_route import sms_router
@@ -20,7 +20,7 @@ Base.metadata.create_all(bind=engine)
 def include_router(app):
     app.include_router(user_router)
     app.include_router(customer_router)
-    app.include_router(servicetime_router)
+    # app.include_router(servicetime_router)
     app.include_router(unit_router)
     app.include_router(smtp_router)
     app.include_router(sms_router)

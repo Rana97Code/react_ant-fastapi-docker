@@ -2,11 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { SearchOutlined } from '@ant-design/icons';
 import { Layout,Input, theme,Table,Button ,Space, Col, Row,  } from 'antd';
 import _ from 'lodash';
-
+import moment from 'moment';
 import Sidebar from '../dashboard/sidebar';
 import Headers from '../dashboard/header';
-import { values } from "lodash";
-// const { Link } = Anchor;
+
+// for moment duration format
+require("moment-duration-format");
+
+
 const { Content } = Layout;
 
 const Service = ()=> {
@@ -35,19 +38,11 @@ const Service = ()=> {
         }
       ];
 
-      
-        const s_time = ServiceProd.map((service)=>service.service_time);
-        const st=[]
-        if(s_time> 12){
-          st=s_time/12 + "Year"
-          console.log(st);
-        }
-        console.log(st);
 
-
-        const data = [];
-        ServiceProd.map((service) =>[ data.push({s_name:service.product_name, c_name:service.customer_name,qty:service.p_qty + service.unit_name,
-          s_date:service.purchase_date, duration:service.service_time + 'Months', exp:service.expiry_date, m_title:service.mail_title, did:service.id})]);
+      const data = [];
+      ServiceProd.map((service) =>[ data.push({s_name:service.product_name, c_name:service.customer_name,qty:service.p_qty + service.unit_name,
+          s_date:service.purchase_date, duration:(moment.duration(service.service_time, 'months').format()), 
+          exp:service.expiry_date, m_title:service.mail_title, did:service.id})]);
 
     const options = {
         filterType: 'checkbox',

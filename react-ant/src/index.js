@@ -40,10 +40,9 @@ export default function App() {
       <Routes>
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/" element={<Dashb />} />
 
         <Route element={<PrivateRoute />}>
-          {/* <Route index element={<Signin />} /> */}
+         <Route path="/" element={<Dashb />} />
          <Route path="/home" element={<AppLayout />} />
 
          <Route path="/customer" element={<Customer />} />

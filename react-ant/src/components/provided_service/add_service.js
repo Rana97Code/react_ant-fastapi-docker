@@ -93,11 +93,6 @@ const getDetails = async (e)=>{
   // console.warn(res)
   }
 
-  const servtime = await fetch(`http://127.0.0.1:8000/servicetime`);
-  
-  if (!servtime.ok){
-    throw new Error('Could not data exist');
-  }
 
 
   const content = await fetch(`http://127.0.0.1:8000/allmail_content`);
