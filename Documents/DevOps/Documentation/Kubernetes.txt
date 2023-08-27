@@ -1,0 +1,85 @@
+*************kubernetes architecture*************
+
+Kubernetes Components:
+
+Kubernetes based on Cluster.
+ Official details:https://kubernetes.io/docs/concepts/overview/components/
+
+Inside Cluster there have two main modules
+
+	=> Control Plane or Master
+	=> Node or Workers
+
+   Control Plane:
+	Inside Control Plane there is 4 more modules
+		=>API Server (All API's get and post from there)
+		=>ETCD (Stored all details infromation about Node and POD)
+		=>Control Manager (Control all request and responce from API Server) 
+		=>Scheduler (Execute All command from Control Manager)
+  
+   Node:
+	Inside Node there also 4 modules
+		=>Kubelet (Kubelate has all details about this Node's all POD and it makes sure that containers inside POD is running or not.)
+		=>Kube-proxy (Stored all network information)
+		=>Container Engine (Stored Engine like Docker, Rocket)
+		=>POD (Pod stored all container)
+
+
+
+Installation Kubernetes:
+	
+	For Windows PC we can use Minikube 
+	 Download and install in local pc : https://minikube.sigs.k8s.io/docs/start/
+
+
+Minikube start and all:
+	After install need to open terminal and run command >minikube start
+	minikube status check> minikube status
+	For Dashboard > minikube dashboard
+	Then it will open a dashboard plane: http://127.0.0.1:51608/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/ 
+	minikube push> minikube push
+	minikube unpush> minikube unpause
+	minikube stop > minikube stop
+	minikube addons list> minikube addons list
+
+
+	
+Deploy applications:
+	By Deployment we are creade a POD
+
+	>kubectl create deployment hello-minikube --image=python/fastSMS
+
+Make this deployment pod as a service:
+	>kubectl expose deployment hello-minikube --type=NodePort --name=hello-minikube-service --port=80
+	
+	View this service> kubectl get services hello-minikube
+
+	View minikube deployements > kubectl get deployments
+	View Pod > kubectl get pods
+	View Cluster events> kubectl get events
+	View Kubectl configuration> kubectl config view
+
+
+
+For run in web browser:
+	>minikube service hello-minikube
+
+For change port:
+	>kubectl port-forward service/hello-minikube 7080:8080
+	and port service port:http://localhost:7080/.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

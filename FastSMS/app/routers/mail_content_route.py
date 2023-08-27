@@ -9,19 +9,19 @@ mail_content_router = APIRouter()
 
 
 @mail_content_router.post("/new_content_add")
-def create(mailc:McontentCreateSchema,db:Session=Depends(get_db)):
+async def create(mailc:McontentCreateSchema,db:Session=Depends(get_db)):
     srv=MailContent(mail_type=mailc.mail_type,mail_title=mailc.mail_title,mail_content=mailc.mail_content)
     db.add(srv)
     db.commit()
     return {"Message":"Successfully Add"}
 
 @mail_content_router.get("/allmail_content",response_model=List[MailContentSchema])
-def index(db:Session=Depends(get_db)):
+async def index(db:Session=Depends(get_db)):
     return db.query(MailContent).all()
 
 
 @mail_content_router.get("/get_mail_content/{st_id}",response_model=MailContentSchema)
-def get_itm(st_id:int,db:Session=Depends(get_db)):
+async def get_itm(st_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(MailContent).filter(MailContent.id == st_id).first()
         return (u)
@@ -30,7 +30,7 @@ def get_itm(st_id:int,db:Session=Depends(get_db)):
     
 
 @mail_content_router.put("/update_content/{st_id}")
-def update(st_id:int,content:McontentCreateSchema,db:Session=Depends(get_db)):
+async def update(st_id:int,content:McontentCreateSchema,db:Session=Depends(get_db)):
     try:
         u=db.query(MailContent).filter(MailContent.id==st_id).first()
         u.mail_type=content.mail_type,
@@ -45,7 +45,7 @@ def update(st_id:int,content:McontentCreateSchema,db:Session=Depends(get_db)):
 
 
 @mail_content_router.delete("/delete_content/{st_id}",response_class=JSONResponse)
-def delete(st_id:int,db:Session=Depends(get_db)):
+async def delete(st_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(MailContent).filter(MailContent.id==st_id).first()
         db.delete(u)

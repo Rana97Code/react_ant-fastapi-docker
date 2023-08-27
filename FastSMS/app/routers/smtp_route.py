@@ -9,18 +9,18 @@ from fastapi.responses import JSONResponse
 smtp_router = APIRouter()
 
 @smtp_router.post("/add_smtp")
-def create(smtp:SmtpCreateSchema,db:Session=Depends(get_db)): #data field define using schema and session manage
+async def create(smtp:SmtpCreateSchema,db:Session=Depends(get_db)): #data field define using schema and session manage
     srv=Smtp(smtp_url=smtp.smtp_url,port_num=smtp.port_num,email=smtp.email,password=smtp.password)
     db.add(srv)
     db.commit()
     return {"Message":"Successfully Add"}
 
 @smtp_router.get("/smtp",response_model=List[SmtpSchema])
-def index(db:Session=Depends(get_db)):
+async def index(db:Session=Depends(get_db)):
     return db.query(Smtp).all()
 
 @smtp_router.get("/get_smtp/{smtp_id}",response_model=SmtpSchema)
-def get_itm(smtp_id:int,db:Session=Depends(get_db)):
+async def get_itm(smtp_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(Smtp).filter(Smtp.id == smtp_id).first()
         return (u)
@@ -28,7 +28,7 @@ def get_itm(smtp_id:int,db:Session=Depends(get_db)):
         return HTTPException(status_code=422, details="SMTP not found")
 
 @smtp_router.put("/update_smtp/{smtp_id}")
-def update(smtp_id:int,smtp:SmtpCreateSchema,db:Session=Depends(get_db)):
+async def update(smtp_id:int,smtp:SmtpCreateSchema,db:Session=Depends(get_db)):
     try:
         u=db.query(Smtp).filter(Smtp.id==smtp_id).first()
         u.smtp_url=smtp.smtp_url,
@@ -42,7 +42,7 @@ def update(smtp_id:int,smtp:SmtpCreateSchema,db:Session=Depends(get_db)):
         return HTTPException(status_code=404,detail="Update Uncessfull")
 
 @smtp_router.delete("/delete_smtp/{smtp_id}",response_class=JSONResponse)
-def get_itm(smtp_id:int,db:Session=Depends(get_db)):
+async def get_itm(smtp_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(Smtp).filter(Smtp.id==smtp_id).first()
         db.delete(u)

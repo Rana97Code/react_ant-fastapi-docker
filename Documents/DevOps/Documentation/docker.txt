@@ -218,3 +218,21 @@ For phpmyadmin >> $ docker pull phpmyadmin/phpmyadmin:latest
 for run and connect with mysql>> $ docker run --name my-own-phpmyadmin -d --link my-own-mysql:db -p 8081:80 phpmyadmin/phpmyadmin
 
 for phpmyadmin any free port we can use
+
+
+
+
+
+**************** PUSH TO DOCKER HUB *****************
+Open Command Prompt
+then command> docker login
+then will come username :
+after give the username and enter will come password: 
+after given password it will loged in
+
+For show docker image
+Open a Command Prompt and run command> docker images
+Then create a image&tag for docker hub > docker tag <Image ID> user_id/repo_name:tag
+Check this new image&tag> docker images
+Then push it docker hub repo> docker push user_id/repo_name:tag
+

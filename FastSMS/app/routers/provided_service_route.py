@@ -19,7 +19,7 @@ p_service_router = APIRouter()
 # date_2 = date_now.replace(year=years_to_add).strftime('%Y-%m-%d')
 
 @p_service_router.post("/add_Provided_service")
-def create(p_p:ProServiceCreateSchema,db:Session=Depends(get_db)):
+async def create(p_p:ProServiceCreateSchema,db:Session=Depends(get_db)):
     srv=Provided_service(product_name=p_p.product_name,unit_id=p_p.unit_id,customer_id=p_p.customer_id,p_qty=p_p.p_qty,
                          purchase_date=p_p.purchase_date,service_time=p_p.service_time,notify_time=p_p.notify_time, notification_type=p_p.notification_type,sms_id=p_p.sms_id,email_id=p_p.email_id,auto_renew=p_p.auto_renew,
                          expiry_date=datetime.strptime(p_p.purchase_date, '%Y-%m-%d') + relativedelta(months=int(p_p.service_time)),
@@ -31,7 +31,7 @@ def create(p_p:ProServiceCreateSchema,db:Session=Depends(get_db)):
     return {"Message":"Successfully Add"}
 
 @p_service_router.get("/Provided_services",response_model=List[ServiceProductSchema])
-def index(db:Session=Depends(get_db)):
+async def index(db:Session=Depends(get_db)):
     p_p = db.query(Provided_service,Customer,Unit,MailContent).join(Customer, Provided_service.customer_id == Customer.id ).join(Unit, Provided_service.unit_id == Unit.id )\
                 .join(MailContent, or_(Provided_service.sms_id == MailContent.id, Provided_service.email_id == MailContent.id) )\
             .add_columns(Provided_service.product_name,Unit.unit_name, Customer.customer_name, Provided_service.id, Provided_service.p_qty,  Provided_service.purchase_date,
@@ -60,13 +60,13 @@ def index(db:Session=Depends(get_db)):
     # return db.query(Provided_service).all()
 
 @p_service_router.get("/get_Provided_service/{pp_id}",response_model=ServiceProductSchema)
-def get_itm(pp_id:int,db:Session=Depends(get_db)):
+async def get_itm(pp_id:int,db:Session=Depends(get_db)):
     u=db.query(Provided_service).filter(Provided_service.id == pp_id).first()
     junit = jsonable_encoder(u)
     return JSONResponse(content=junit)
 
 @p_service_router.put("/update_Provided_service/{pp_id}")
-def update(pp_id:int,p_product:ProServiceCreateSchema,db:Session=Depends(get_db)):
+async def update(pp_id:int,p_product:ProServiceCreateSchema,db:Session=Depends(get_db)):
     try:
         u=db.query(Provided_service).filter(Provided_service.id==pp_id).first()
         u.product_name=p_product.product_name,
@@ -105,7 +105,7 @@ async def get_id(s_id:str,db:Session=Depends(get_db)):
 
   
 @p_service_router.put("/get_up_service")
-def get_u(pp_id:Annotated[list[str], Query()] = [62,75],db:Session=Depends(get_db)):
+async def get_u(pp_id:Annotated[list[str], Query()] = [62,75],db:Session=Depends(get_db)):
     u=db.query(Provided_service).filter(Provided_service.id.in_(pp_id)).all()
     junit = jsonable_encoder(u)
     # print(junit)
@@ -160,7 +160,7 @@ async def upd(pp_id:str, db:Session=Depends(get_db)):
     #     return HTTPException(status_code=404,detail="Update Unsuccessfull")
 
 @p_service_router.delete("/delete_Provided_service/{pp_id}",response_class=JSONResponse)
-def get_itm(pp_id:int,db:Session=Depends(get_db)):
+async def get_itm(pp_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(Provided_service).filter(Provided_service.id==pp_id).first()
         db.delete(u)

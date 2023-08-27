@@ -9,19 +9,19 @@ customer_router = APIRouter()
 
 
 @customer_router.post("/customer_add")
-def create(customer:CustomerCreateSchema,db:Session=Depends(get_db)):
+async def create(customer:CustomerCreateSchema,db:Session=Depends(get_db)):
     srv=Customer(customer_name=customer.customer_name,customer_email=customer.customer_email,customer_phone=customer.customer_phone,customer_address=customer.customer_address,company_name=customer.company_name)
     db.add(srv)
     db.commit()
     return {"Message":"Successfully Add"}
 
 @customer_router.get("/customers",response_model=List[CustomerSchema])
-def index(db:Session=Depends(get_db)):
+async def index(db:Session=Depends(get_db)):
     return db.query(Customer).all()
 
 
 @customer_router.get("/get_customer/{st_id}",response_model=CustomerSchema)
-def get_itm(st_id:int,db:Session=Depends(get_db)):
+async def get_itm(st_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(Customer).filter(Customer.id == st_id).first()
         return (u)
@@ -30,7 +30,7 @@ def get_itm(st_id:int,db:Session=Depends(get_db)):
     
 
 @customer_router.put("/update_customer/{st_id}")
-def update(st_id:int,customer:CustomerCreateSchema,db:Session=Depends(get_db)):
+async def update(st_id:int,customer:CustomerCreateSchema,db:Session=Depends(get_db)):
     try:
         u=db.query(Customer).filter(Customer.id==st_id).first()
         u.customer_name=customer.customer_name,
@@ -46,7 +46,7 @@ def update(st_id:int,customer:CustomerCreateSchema,db:Session=Depends(get_db)):
 
 
 @customer_router.delete("/delete_customer/{st_id}",response_class=JSONResponse)
-def delete(st_id:int,db:Session=Depends(get_db)):
+async def delete(st_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(Customer).filter(Customer.id==st_id).first()
         db.delete(u)

@@ -45,7 +45,7 @@ function Signin() {
   return (
 
 
-    <Space style={{width: '100%', paddingTop: 60, justifyContent: 'center'}}>
+    <Space style={{width: '100%', paddingTop: 60, justifyContent: 'center', }}>
 
        <Card className="myCard">   
         <Image  width={160} height={65} src="/images/logo1.png" />

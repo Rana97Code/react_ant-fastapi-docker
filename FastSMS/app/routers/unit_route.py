@@ -10,18 +10,18 @@ from fastapi.encoders import jsonable_encoder
 unit_router = APIRouter()
 
 @unit_router.post("/add_unit")
-def create(unit:UnitCreateSchema,db:Session=Depends(get_db)): #data field define using schema and session manage
+async def create(unit:UnitCreateSchema,db:Session=Depends(get_db)): #data field define using schema and session manage
     srv=Unit(unit_name=unit.unit_name,unit_details=unit.unit_details)
     db.add(srv)
     db.commit()
     return {"Message":"Successfully Add"}
 
 @unit_router.get("/units",response_model=List[UnitSchema])
-def index(db:Session=Depends(get_db)):
+async def index(db:Session=Depends(get_db)):
     return db.query(Unit).all()
 
 @unit_router.get("/get_unit/{unit_id}",response_model=UnitSchema)
-def get_itm(unit_id:int,db:Session=Depends(get_db)):
+async def get_itm(unit_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(Unit).filter(Unit.id == unit_id).first()
         return (u)
@@ -29,7 +29,7 @@ def get_itm(unit_id:int,db:Session=Depends(get_db)):
         return HTTPException(status_code=422, details="Unit not found")
 
 @unit_router.put("/update_unit/{unit_id}")
-def update(unit_id:int,unit:UnitCreateSchema,db:Session=Depends(get_db)):
+async def update(unit_id:int,unit:UnitCreateSchema,db:Session=Depends(get_db)):
     try:
         u=db.query(Unit).filter(Unit.id==unit_id).first()
         u.unit_name=unit.unit_name,
@@ -42,7 +42,7 @@ def update(unit_id:int,unit:UnitCreateSchema,db:Session=Depends(get_db)):
         return HTTPException(status_code=404,detail="Update Uncessfull")
 
 @unit_router.delete("/delete_unit/{unit_id}",response_class=JSONResponse)
-def get_itm(unit_id:int,db:Session=Depends(get_db)):
+async def get_itm(unit_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(Unit).filter(Unit.id==unit_id).first()
         db.delete(u)

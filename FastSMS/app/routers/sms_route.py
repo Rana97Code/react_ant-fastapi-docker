@@ -9,18 +9,18 @@ from fastapi.responses import JSONResponse
 sms_router = APIRouter()
 
 @sms_router.post("/add_sms")
-def create(sms:SMS_ApiCreateSchema,db:Session=Depends(get_db)): #data field define using schema and session manage
+async def create(sms:SMS_ApiCreateSchema,db:Session=Depends(get_db)): #data field define using schema and session manage
     srv=SMS_API(sms_url=sms.sms_url,user_name=sms.user_name,api_key=sms.api_key,password=sms.password)
     db.add(srv)
     db.commit()
     return {"Message":"Successfully Add"}
 
 @sms_router.get("/sms",response_model=List[SMS_ApiSchema])
-def index(db:Session=Depends(get_db)):
+async def index(db:Session=Depends(get_db)):
     return db.query(SMS_API).all()
 
 @sms_router.get("/get_sms/{sms_id}",response_model=SMS_ApiSchema)
-def get_itm(sms_id:int,db:Session=Depends(get_db)):
+async def get_itm(sms_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(SMS_API).filter(SMS_API.id == sms_id).first()
         return (u)
@@ -28,7 +28,7 @@ def get_itm(sms_id:int,db:Session=Depends(get_db)):
         return HTTPException(status_code=422, details="SMS_API not found")
 
 @sms_router.put("/update_sms/{sms_id}")
-def update(sms_id:int,sms:SMS_ApiCreateSchema,db:Session=Depends(get_db)):
+async def update(sms_id:int,sms:SMS_ApiCreateSchema,db:Session=Depends(get_db)):
     try:
         u=db.query(SMS_API).filter(SMS_API.id==sms_id).first()
         u.sms_url=sms.sms_url,
@@ -42,7 +42,7 @@ def update(sms_id:int,sms:SMS_ApiCreateSchema,db:Session=Depends(get_db)):
         return HTTPException(status_code=404,detail="Update Uncessfull")
 
 @sms_router.delete("/delete_sms/{sms_id}",response_class=JSONResponse)
-def get_itm(sms_id:int,db:Session=Depends(get_db)):
+async def get_itm(sms_id:int,db:Session=Depends(get_db)):
     try:
         u=db.query(SMS_API).filter(SMS_API.id==sms_id).first()
         db.delete(u)
