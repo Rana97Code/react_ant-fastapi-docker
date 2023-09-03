@@ -1,7 +1,7 @@
 import React, { useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserOutlined, MailOutlined, LogoutOutlined  } from '@ant-design/icons';
-import { Layout, Dropdown,  Button, theme,Space } from 'antd';
+import { Layout, Dropdown,  Button, Modal , theme, Space, Spin } from 'antd';
 import '../../App.css';
 import jwtDecode from 'jwt-decode'
 
@@ -12,6 +12,7 @@ const { Header } = Layout;
 
 const Headers = () => {
   const [profile, setProfile] = useState()
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   const { token: { colorBgContainer }, } = theme.useToken();
@@ -48,22 +49,32 @@ const Headers = () => {
   }, [])
 
 
-  const items = [
-    { label: 'User Name',  key: '3', icon: <UserOutlined />, danger: true,disabled: true },
-    { label: profile,  key: '4',  icon: <MailOutlined />,  danger: true,disabled: true, },
-    { label: 'Log Out',  key: '4', icon: <LogoutOutlined />, danger: true, },
-  ];
-  
-
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const logout=()=>{
     localStorage.clear();
     navigate("/signin");
     }
 
+  const items = [
+    { icon: <Button style={{ width: 130 }} onClick={showModal} ><Spin />Edit Profile</Button>},
+    { label: 'User Name',  key: '3', icon: <UserOutlined />, danger: true,disabled: true },
+    { label: profile,  key: '4',  icon: <MailOutlined />,disabled: false, },
+    { key: '5', icon: <Button style={{ width: 130, background: 'red' }} onClick={logout} ><LogoutOutlined />Log Out</Button>, danger: true },
+  ];
+  
+
   const menuProps = {
     items,
-    onClick: logout,
+    // onClick: logout,
   };
 
 
@@ -76,7 +87,20 @@ const Headers = () => {
               {profile}
             </Dropdown.Button>
           </Space>
+
+
+          {/* User Profile Modal */}
+          <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[
+              <Button key="back" onClick={handleCancel}> Return </Button>,
+              <Button key="submit" type="primary" onClick={handleOk}> Submit </Button>,
+            ]}>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          </Modal>
         </Header>
+
+
 
   );
 };

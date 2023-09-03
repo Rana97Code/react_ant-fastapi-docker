@@ -19,6 +19,7 @@ import AddNotification from './components/notification_temp/add_notification';
 import EditNotification from './components/notification_temp/ed_notification';
 
 import Service from './components/provided_service/page';
+import ServiceExp from './components/provided_service/exp_page';
 import AddService from './components/provided_service/add_service';
 import EditService from './components/provided_service/ed_service';
 
@@ -58,6 +59,7 @@ export default function App() {
          <Route path="/edit_notification/:id" element={<EditNotification />} />
 
          <Route path="/service" element={<Service />} />
+         <Route path="/service_exp" element={<ServiceExp />} />
          <Route path="/add_service" element={<AddService />} />
          <Route path="/edit_service/:id" element={<EditService />} />
 

@@ -16,11 +16,12 @@ const Sidebar = () => {
   return (
       <Sider trigger={null} collapsible collapsed={collapsed} >
           <Image  width={200} height={65} style={{}} src="/images/logo.jpg" />
-
           <Button type="text" icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
             style={{  fontSize: '16px',  width: 64,  height: 64, color: 'white', float: 'right' }}
           />
+          
+
           <Menu theme="dark" mode="inline"
             items={[
               

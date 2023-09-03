@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { LockOutlined,InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
-import { Layout, Table ,Card, Space, theme, Row } from 'antd';
+import React, { useState, useEffect,Fragment } from "react";
+import { LockOutlined,InfoCircleOutlined, UserOutlined,LoadingOutlined  } from '@ant-design/icons';
+import { Layout, Table ,Card, Space, theme, Row, Avatar, Segmented } from 'antd';
 import Sidebar from './sidebar';
 import Headers from './header';
 import { useParams,useNavigate } from 'react-router-dom';
@@ -87,17 +87,17 @@ function Dashb() {
     },[])  
 
 
-    const excolumns = [ { title: 'ID',dataIndex: 'id' }, { title: 'Service Name',dataIndex: 'sname'}, { title: 'Expiry Date',dataIndex: 'ed'} , { title: 'Renew Date',dataIndex: 'rd'}];
+    const excolumns = [  { title: 'Service Name',dataIndex: 'sname'}, { title: 'Expiry Date',dataIndex: 'ed'} , { title: 'Renew Date',dataIndex: 'rd'}];
     const edata = [];
-    ExpService.map((esrv) =>[ edata.push({id:esrv.id, sname:esrv.product_name, ed:esrv.expiry_date, rd:esrv.renew_date})]);
+    ExpService.map((esrv) =>[ edata.push({sname:esrv.product_name, ed:esrv.expiry_date, rd:esrv.renew_date})]);
 
-    const scolumns = [ { title: 'ID',dataIndex: 'id' }, { title: 'Service Name',dataIndex: 'sname'}, { title: 'Notification Type',dataIndex: 'nt'} ];
+    const scolumns = [ { title: 'Service Name',dataIndex: 'sname'}, { title: 'Notification Type',dataIndex: 'nt'} ];
     const sdata = [];
-    Servi.map((srv) =>[ sdata.push({id:srv.id, sname:srv.product_name, nt:srv.notification_type})]);
+    Servi.map((srv) =>[ sdata.push({sname:srv.product_name, nt:srv.notification_type})]);
 
-    const ccolumns = [ { title: 'ID',dataIndex: 'id' }, { title: 'Customer Name',dataIndex: 'name'}, { title: 'Company Name',dataIndex: 'com'} ];
+    const ccolumns = [ { title: 'Customer Name',dataIndex: 'name'}, { title: 'Company Name',dataIndex: 'com'} ];
     const cdata = [];
-    Custom.map((cus) =>[ cdata.push({id:cus.id, name:cus.customer_name, com:cus.company_name})]);
+    Custom.map((cus) =>[ cdata.push({ name:cus.customer_name, com:cus.company_name})]);
 
   return (
     <Layout style={{ minHeight: '100vh'}}>
@@ -109,25 +109,22 @@ function Dashb() {
            
             <Space direction="horizonal" >
               <Row>
-                <Card className="dCard" title="Services will Expire Soon"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ background: '#08979c', overflow: 'hidden' }} >
-                  <h3 style={{color: 'white', paddingBottom: 8}}>Services will be Expired: {ExpServicen}</h3>
+                <Card className="dCard" title="Services will Expire Soon "  extra={<a style={{color: 'black'}} href="/service_exp">More</a>}  style={{ background: '#08979c', overflow: 'hidden' }} >
+                  <h3 style={{color: 'white', paddingBottom: 8}}><LoadingOutlined /> Number of Service will be Expired: <Avatar style={{background: '#a8071a', paddingBottom: 8}}>{ExpServicen}</Avatar></h3>
                   <Table className="dTable" columns={excolumns}  dataSource={edata}  scroll={{ x: 400, y: 150, }} />
                 </Card>
                 <Card className="dCard" title="Service List"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ background: '#096dd9', overflow: 'hidden' }} >
-                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Service : {serviceco}</h3>
+                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Service : <Avatar>{serviceco}</Avatar></h3>
                   <Table className="dTable" columns={scolumns}  dataSource={sdata}  scroll={{ x: 400, y: 150, }} />
 
                 </Card>
                 <Card className="dCard" title="Customer List"  extra={<a  style={{color: 'black'}} href="/customer">More</a>}  style={{ background: '#3f6600', overflow: 'hidden' }} >
-                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Customer : {Customco}</h3>
+                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Customer : <Avatar>{Customco}</Avatar></h3>
                   <Table className="dTable" columns={ccolumns}  dataSource={cdata}  scroll={{ x: 400, y: 150, }} />
                 </Card>
               </Row>
             </Space>
-
           </Content>
-
-     
         </Layout>
     </Layout>  );
 }

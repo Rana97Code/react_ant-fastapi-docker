@@ -3,8 +3,8 @@ https://www.docker.com/
 
 After install then start 
 
-Create a App File as container 
-then this file create an other file name : docker-compose.yami
+We have to Create a App File as container 
+then in this file create an other file name : docker-compose.yami
 
 
 If we run an existing project in docker then we have to create a File name Dockerfile file inside both fontend and backend section
