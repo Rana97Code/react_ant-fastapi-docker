@@ -1,5 +1,5 @@
 import React, { useState, useEffect,Fragment } from "react";
-import { LockOutlined,InfoCircleOutlined, UserOutlined,LoadingOutlined  } from '@ant-design/icons';
+import { LockOutlined,InfoCircleOutlined, UserOutlined,LoadingOutlined } from '@ant-design/icons';
 import { Layout, Table ,Card, Space, theme, Row, Avatar, Segmented } from 'antd';
 import Sidebar from './sidebar';
 import Headers from './header';
@@ -43,8 +43,7 @@ function Dashb() {
         .isBetween(moment(date), moment(nextmonth));
     });
 
-    // console.log(date, nextmonth);
-    // console.log(filtered);
+
     const exsrvc = _.size(filtered);
     setExpireservn(exsrvc);
     setExpireserv(filtered);
@@ -66,7 +65,7 @@ function Dashb() {
     const s_id = _.map(recurs, 'id');
     const auto_id= s_id.toString();
     // const test = auto_id.replace("\\'", " ");
-    console.log({auto_id});
+    // console.log({auto_id});
     if(auto_id){
       let resu = await fetch(`http://127.0.0.1:8000/update_service/${auto_id}`,{
           method: 'put',
@@ -75,8 +74,6 @@ function Dashb() {
         navigate('/')
       }
     }
-
-
   };
 
 
@@ -85,7 +82,6 @@ function Dashb() {
     getData();
     
     },[])  
-
 
     const excolumns = [  { title: 'Service Name',dataIndex: 'sname'}, { title: 'Expiry Date',dataIndex: 'ed'} , { title: 'Renew Date',dataIndex: 'rd'}];
     const edata = [];

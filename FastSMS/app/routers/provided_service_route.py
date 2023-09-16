@@ -116,7 +116,7 @@ async def get_u(pp_id:Annotated[list[str], Query()] = [62,75],db:Session=Depends
 @p_service_router.put("/update_service/{pp_id}" )
 async def upd(pp_id:str, db:Session=Depends(get_db)):
     # try:
-        print(pp_id)
+        # print(pp_id)
         y = pp_id.split(",")
         # print(y)
         u=db.query(Provided_service).filter(Provided_service.id.in_(y)).all()

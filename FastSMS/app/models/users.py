@@ -2,11 +2,12 @@ from app.config import engine, Base, SessionLocal
 from sqlalchemy import Column,String,Integer,Boolean
 from pydantic import BaseModel
 import passlib.hash as _hash
-
+from fastapi import File, UploadFile
 
 class User(Base):
     __tablename__="users"
     id=Column(Integer,primary_key=True,index=True)
+    user_img = Column(String(255),index=True)
     user_name = Column(String(255),unique=True,index=True)
     user_phone = Column(String(255),unique=True,index=True)
     user_email = Column(String(255),unique=True,index=True)
@@ -29,6 +30,7 @@ class UserCreateSchema(BaseModel):
 
 class UserSchema(BaseModel):
     id:int
+    user_img:str
     user_name:str
     user_phone:str
     user_email:str

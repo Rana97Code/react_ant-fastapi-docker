@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException,status
+from fastapi import APIRouter, Depends, HTTPException,status,File, UploadFile, Form
 from typing import Annotated
 from datetime import datetime, timedelta
 # from dependencies import get_token_header
@@ -12,6 +12,11 @@ import passlib.hash as _hash
 # import jwt as jwt,JWTError
 import bcrypt
 from jose import JWTError,jwt
+from fastapi.encoders import jsonable_encoder
+from pathlib import *
+
+IMAGEDIR = Path('app/img/')
+
 
 #make a secretkey it's optional
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
@@ -142,12 +147,56 @@ async def get_current_active_user(current_user: Annotated[User, Depends(get_curr
 
 
 
-
 @user_router.get("/my_profile", response_model=UserRead)
 async def get_user(current_user: User= Depends(get_current_active_user)):
     user = UserRead(user_email=current_user.user_email)
     return user
 
-# @user_router.get("/users/me", response_model=UserRead)
-# def read_own_items(current_user:  User= Depends(get_current_active_user)):
-#     return [{"user_email": current_user.user_email}]
+
+@user_router.get("/me", response_model=UserRead)
+def read_own_items(current_user:  User= Depends(get_current_active_user)):
+    return [{"user_email": current_user.user_email}]
+
+@user_router.get("/get_me/{user_email}")
+async def get_itm(user_email:str,db:Session=Depends(get_db)):
+    try:
+        u=db.query(User).filter(User.user_email == user_email).first()
+        # print(jsonable_encoder(u))
+        return (u)
+    except:
+        return HTTPException(status_code=422, details="Unit not found")
+
+
+@user_router.put("/update_user/{user_id}")
+async def update(user_id:int, user:UserSchema, file: UploadFile, db:Session=Depends(get_db)):
+    try:
+        u=db.query(User).filter(User.id==user_id).first()
+        u.user_img=file.filename,
+        # u.user_name=user.user_name,
+        # u.user_email=user.user_email,
+        # u.user_phone=user.user_phone,
+        # print(jsonable_encoder(u))
+        db.add(u)
+        db.commit()
+        return {"Message":"Successfully Update"}
+    except:
+        return HTTPException(status_code=404,detail="Update Uncessfull")
+    
+@user_router.put("/file_upload/{user_id}")
+async def create_upload_files(user_id:int, user_img: UploadFile = File(...), db:Session=Depends(get_db)):
+        u=db.query(User).filter(User.id==user_id).first()
+        u.user_img=user_img.filename,
+        # u.user_name=form.user_name,
+        # u.user_email=form.user_email,
+
+        content = await user_img.read()
+        # print(user_img)
+        with open(f"{IMAGEDIR}/{user_img.filename}","wb") as f:
+            f.write(content)
+
+        db.add(u)
+        db.commit()
+        # junit = jsonable_encoder(u)
+        # return JSONResponse(content=junit)
+        return {"Message":"Successfully Update"}
+ 
