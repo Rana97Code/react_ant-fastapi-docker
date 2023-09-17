@@ -29,9 +29,9 @@ render(){
         <Layout>
           <Headers />
           <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280,  overflow: "hidden" }} >
-           
+            <Button onClick={() => this.handleModal(true)}>Edit User Profile</Button>
+
             <Calendar fullscreen={false} style={{ float: 'right', width: 300 }} />
-            <Button onClick={() => this.handleModal(true)}>User Details</Button>
             <ProfileModal visible={this.state.visible} handleModal={this.handleModal} />
 
           </Content>

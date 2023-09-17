@@ -15,7 +15,8 @@ from jose import JWTError,jwt
 from fastapi.encoders import jsonable_encoder
 from pathlib import *
 
-IMAGEDIR = Path('app/img/')
+# IMAGEDIR = Path('app/img/')
+IMAGEDIR = Path('../react-ant/public/images/')
 
 
 #make a secretkey it's optional
@@ -111,7 +112,7 @@ async def generate_token(signin_request: SigninRequest,  db:Session=Depends(get_
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=20)
+    access_token_expires = timedelta(minutes=40)
     access_token = create_token( data={"user_email": user.user_email}, expires_delta=access_token_expires )
     return {"access_token": access_token, "user_email": user.user_email, "token_type": "bearer"}
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect,Fragment } from "react";
 import { LockOutlined,InfoCircleOutlined, UserOutlined,LoadingOutlined } from '@ant-design/icons';
-import { Layout, Table ,Card, Space, theme, Row, Avatar, Segmented } from 'antd';
+import { Layout, Table ,Card, Space, theme, Row, Avatar, Segmented, Badge  } from 'antd';
 import Sidebar from './sidebar';
 import Headers from './header';
 import { useParams,useNavigate } from 'react-router-dom';
@@ -77,7 +77,6 @@ function Dashb() {
   };
 
 
-
   useEffect(()=>{
     getData();
     
@@ -106,16 +105,16 @@ function Dashb() {
             <Space direction="horizonal" >
               <Row>
                 <Card className="dCard" title="Services will Expire Soon "  extra={<a style={{color: 'black'}} href="/service_exp">More</a>}  style={{ background: '#08979c', overflow: 'hidden' }} >
-                  <h3 style={{color: 'white', paddingBottom: 8}}><LoadingOutlined /> Number of Service will be Expired: <Avatar style={{background: '#a8071a', paddingBottom: 8}}>{ExpServicen}</Avatar></h3>
+                  <h3 style={{color: 'white', paddingBottom: 8}}><LoadingOutlined /> Number of Service will be Expired: <Badge count={ExpServicen}><Avatar shape="square" size="small" /></Badge></h3>
                   <Table className="dTable" columns={excolumns}  dataSource={edata}  scroll={{ x: 400, y: 150, }} />
                 </Card>
                 <Card className="dCard" title="Service List"  extra={<a style={{color: 'black'}} href="/service">More</a>}  style={{ background: '#096dd9', overflow: 'hidden' }} >
-                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Service : <Avatar>{serviceco}</Avatar></h3>
+                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Service : <Badge count={serviceco}> <Avatar shape="square" size="small" /></Badge></h3>
                   <Table className="dTable" columns={scolumns}  dataSource={sdata}  scroll={{ x: 400, y: 150, }} />
 
                 </Card>
                 <Card className="dCard" title="Customer List"  extra={<a  style={{color: 'black'}} href="/customer">More</a>}  style={{ background: '#3f6600', overflow: 'hidden' }} >
-                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Customer : <Avatar>{Customco}</Avatar></h3>
+                  <h3 style={{color: 'white', paddingBottom: 8}}>Number Of Customer : <Badge count={Customco}> <Avatar shape="square" size="small" /></Badge></h3>
                   <Table className="dTable" columns={ccolumns}  dataSource={cdata}  scroll={{ x: 400, y: 150, }} />
                 </Card>
               </Row>

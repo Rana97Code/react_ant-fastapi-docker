@@ -2,8 +2,8 @@
 import React, { Component, useState, useEffect  } from "react";
 import { useNavigate,useParams } from 'react-router-dom';
 import {  Form, Input, Col, Row, Button, Modal, Upload, Image  } from "antd";
-import { UserOutlined, MailOutlined ,MobileOutlined, LogoutOutlined  } from '@ant-design/icons';
-
+import { UserOutlined, MailOutlined ,MobileOutlined, AreaChartOutlined  } from '@ant-design/icons';
+// import pro_pic from '../../../FastSMS/app/img/man.jpg';
 
 export default class ProfileModal extends Component {
   constructor(props) {
@@ -42,7 +42,6 @@ function Profil() {
       const u_id = id;
   
       const onSubmit = async (e)=>{
-        // console.log(user_img);
         let form_data = new FormData();
             form_data.append('user_img', user_img);               
                         
@@ -80,48 +79,17 @@ function Profil() {
     
       fetchData();
       // onSubmit();
-
-
     }, [])
 
-
-const [fileList, setFileList] = useState([
-    {
-      uid: '-1',
-      name: user_img,
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-  ]);
-  const onChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-  };
-  const onPreview = async (file) => {
-    let src = file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
-  };
 
 
     return (
       <>
 
            <Form  name="normal_login"  className="login-form"  initialValues={{ remember: true, }}  >
-              <Row>
+              <Row style={{ textAlign: "center", float: 'right'}}>
                 <Col>
-                <Upload action="https://www.mocky.io/v2/5cc8019d300000980a055e76" listType="picture-card" fileList={fileList} onChange={onChange} onPreview={onPreview}>
-                {fileList.length < 5 && '+ Upload'} </Upload>
-
-                  {/* <Image src={url} alt={user_img} /> */}
+                  <Image style={{ width: 110, height: 120, textAlign: "center", margin: 25}} src={'/images/'+user_img} alt={user_img} />
                 </Col>
               </Row>
 
@@ -129,7 +97,8 @@ const [fileList, setFileList] = useState([
 
               <Row>
                 <Col>
-                    <Input name="image" type="file" accept=".jpeg, .png, .jpg, .PNG" onChange={(e)=>setImg(e.target.files[0])} />
+                    <Input className="inputWi" prefix={<AreaChartOutlined className="site-form-item-icon" />} type="file" 
+                    accept=".jpeg, .png, .jpg, .PNG" onChange={(e)=>setImg(e.target.files[0])} />
                 </Col>
               </Row>
 
@@ -137,7 +106,7 @@ const [fileList, setFileList] = useState([
 
               <Row>
                 <Col>
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />}  value={user_name}
+                    <Input className="inputWi" prefix={<UserOutlined className="site-form-item-icon" />}  value={user_name}
                       onChange={(e)=>setName(e.target.value)} placeholder="User Name" />
                 </Col>
               </Row>
@@ -147,7 +116,7 @@ const [fileList, setFileList] = useState([
 
               <Row>
                 <Col>
-                    <Input prefix={<MailOutlined className="site-form-item-icon" />} value={user_email}
+                    <Input className="inputWi" prefix={<MailOutlined className="site-form-item-icon" />} value={user_email}
                       onChange={(e)=>setEmail(e.target.value)} placeholder="User Emails" />
                 </Col>
               </Row>
@@ -155,7 +124,7 @@ const [fileList, setFileList] = useState([
               <br />
               <Row>
                 <Col>
-                    <Input prefix={<MobileOutlined className="site-form-item-icon" />}  value={user_phone}
+                    <Input className="inputWi" prefix={<MobileOutlined className="site-form-item-icon" />}  value={user_phone}
                       onChange={(e)=>setPhone(e.target.value)} placeholder="User Phone" />
                 </Col>
               </Row>

@@ -4,12 +4,10 @@ import { UserOutlined, MailOutlined ,MobileOutlined, LogoutOutlined  } from '@an
 import { Layout, Dropdown, Form, Input, Col, Row, Button, Modal, Tooltip, theme, Space, Spin, Upload  } from 'antd';
 import '../../App.css';
 import jwtDecode from 'jwt-decode'
-import Profile from '../../user/user_profile';
-
+import ProfileModal from '../../user/profile_modal';
 
 // const { Link } = Anchor;
 const { Header } = Layout;
-
 
 const Headers = () => {
   const [profile, setProfile] = useState()
@@ -117,8 +115,8 @@ const Headers = () => {
     }
 
   const items = [
-    { icon: <Button style={{ width: 130 }}  ><Spin />Edit Profile</Button>},
-    { icon: <Button style={{ width: 130 }} onClick={showProfile} >Profile Details</Button>},
+    // { icon: <Button style={{ width: 130 }} onClick={() => this.handleModal(true)} ><Spin />Edit Profile</Button>},
+    { icon: <Button style={{ width: 130 }} onClick={showProfile} ><Spin />Profile Details</Button>},
     { label: 'User Name',  key: '3', icon: <UserOutlined />, danger: true,disabled: true },
     { label: profile,  key: '4',  icon: <MailOutlined />,disabled: false, },
     { key: '5', icon: <Button style={{ width: 130, background: 'red' }} onClick={logout} ><LogoutOutlined />Log Out</Button>, danger: true },
