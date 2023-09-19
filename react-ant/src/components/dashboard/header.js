@@ -109,14 +109,19 @@ const Headers = () => {
     navigate("/profile");
     }
 
+  const showRoll=()=>{
+      navigate("/user_roll");
+      }
+    
+
   const logout=()=>{
     localStorage.clear();
     navigate("/signin");
     }
 
   const items = [
-    // { icon: <Button style={{ width: 130 }} onClick={() => this.handleModal(true)} ><Spin />Edit Profile</Button>},
-    { icon: <Button style={{ width: 130 }} onClick={showProfile} ><Spin />Profile Details</Button>},
+    { icon: <Button style={{ width: 130 }} onClick={showProfile} ><Spin />Edit Profile</Button>},
+    { icon: <Button style={{ width: 130 }} onClick={showRoll} ><Spin />User Roll</Button>},
     { label: 'User Name',  key: '3', icon: <UserOutlined />, danger: true,disabled: true },
     { label: profile,  key: '4',  icon: <MailOutlined />,disabled: false, },
     { key: '5', icon: <Button style={{ width: 130, background: 'red' }} onClick={logout} ><LogoutOutlined />Log Out</Button>, danger: true },

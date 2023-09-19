@@ -5,6 +5,7 @@ from app.config import engine, Base
 
 #import routers
 from app.routers.user_route import user_router
+from app.routers.user_roll_route import user_roll_router
 from app.routers.customer_route import customer_router
 # from app.routers.servicetime_route import servicetime_router
 from app.routers.unit_route import unit_router
@@ -19,6 +20,7 @@ Base.metadata.create_all(bind=engine)
 #include all routers
 def include_router(app):
     app.include_router(user_router)
+    app.include_router(user_roll_router)
     app.include_router(customer_router)
     # app.include_router(servicetime_router)
     app.include_router(unit_router)

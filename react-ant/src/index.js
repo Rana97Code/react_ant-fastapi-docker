@@ -35,6 +35,7 @@ import AddSmtp from './components/settings/smtp/add_smtp';
 import Dashb from "./components/dashboard/dashboard";
 import AppLayout from "./components/layout";
 import Profile from "./user/user_profile";
+import UserRoll from "./user/user_roll";
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
          <Route path="/" element={<Dashb />} />
          <Route path="/home" element={<AppLayout />} />
          <Route path="/profile" element={<Profile />} />
+         <Route path="/user_roll" element={<UserRoll />} />
 
          <Route path="/customer" element={<Customer />} />
          <Route path="/add_customer" element={<AddCustomer />} />

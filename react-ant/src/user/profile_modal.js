@@ -52,7 +52,7 @@ function Profil() {
         });
         if(result.ok){
             const data = await result.json();
-            navigate('/')
+            navigate('/profile')
           }
       }
   
