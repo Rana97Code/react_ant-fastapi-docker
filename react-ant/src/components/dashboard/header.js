@@ -94,17 +94,6 @@ const Headers = () => {
     
   }, [])
 
-
-  // const showModal = () => {
-  //   setIsModalOpen(true);
-  // };
-  // const handleOk = () => {
-  //   setIsModalOpen(false);
-  // };
-  // const handleCancel = () => {
-  //   setIsModalOpen(false);
-  // };
-
   const showProfile=()=>{
     navigate("/profile");
     }
@@ -139,18 +128,11 @@ const Headers = () => {
   return (
 
         <Header style={{ padding: 0,  background: "#006d75", display: 'block', overflow: "hidden" }}  >
-          {/* <Button onClick={() => this.handleModal(true)}>New Modal</Button> */}
           <Space wrap style={{ float: 'right', margin: 14, marginRight: 40 }}> 
-            {/* <Button onClick={showModal} >modal</Button> */}
             <Dropdown.Button menu={menuProps} placement="bottom" icon={<UserOutlined />}  > 
               {profile}
             </Dropdown.Button>
           </Space>
-
-          {/* <User_Profile open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  handleShowB={() => setShowB(false)} /> */}
-          {/* User Profile Modal */}
-          
-          {/* <Profile visible={this.state.visible} handleModal={this.handleModal} /> */}
         </Header>
 
   );

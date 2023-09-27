@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Depends,HTTPException, Form
+from fastapi import APIRouter,Depends,HTTPException, Form, Request
 from typing import Union,List,Annotated
 from sqlalchemy.orm import Session
 from app.models.useraccess import AccessTable,AccessCreateSchema,AccessSchema
@@ -39,16 +39,45 @@ async def get_itm(st_id:int,db:Session=Depends(get_db)):
     return JSONResponse(content=junit)
     
 
-@user_access_router.put("/update_user_access/{st_id}")
-async def update(st_id:int,rollcreate:AccessCreateSchema,db:Session=Depends(get_db)):
-    try:
-        u=db.query(AccessTable).filter(AccessTable.user_type==st_id).first()
-        u.user_type=rollcreate.user_type,
-        u.role_id=rollcreate.role_id,
+# @user_access_router.put("/update_user_access/{a_id}")
+# async def update( a_id:int,acc:List[AccessCreateSchema], db:Session=Depends(get_db)):
+#     # try:
+#         name= jsonable_encoder(acc)
+#         # print(a_id)
+#         print(name)
+#         i = []
+#         x = []
+#         for i in range(len(name)):
+#             print(i)
+#             # unt.append({
+#             user_type= name[i]["user_type"],
+#             role_id= name[i]["role_id"]
+#             # })
+#             # print(unt)
 
-        db.add(u)
-        db.commit()
-        return {"Message":"Successfully Update"}
-    except:
-        return HTTPException(status_code=404,detail="Update Uncessfull")
+#         u=db.query(AccessTable).filter(AccessTable.user_type==a_id).all()
+#         ua =jsonable_encoder(u)
+#         print(ua)
+#         # unt = []
+#         for e,x in enumerate(ua):
+#             x['user_type'] = user_type
+#             x['role_id']= role_id
+#             db.add(x)
+#         db.commit()
+#         return {"Message":"Successfully Update"}
+#     # except:
+#     #     return HTTPException(status_code=404,detail="Update Uncessfull")
 
+
+
+
+# @user_access_router.put("/update_user_access/{a_id}")
+# async def update(a_id:int,acc:List[AccessCreateSchema], db:Session=Depends(get_db)):
+#         u=db.query(AccessTable).filter(AccessTable.user_type==a_id).all()
+#         ua =jsonable_encoder(acc)
+#         for o in u:
+#             db.delete(o)
+#         for ac in ua:
+#             db.add_all([AccessTable(**ac)])
+#         db.commit()
+#         return {"Message":"Successfully Update"}

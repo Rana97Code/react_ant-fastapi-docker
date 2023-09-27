@@ -36,6 +36,7 @@ import Dashb from "./components/dashboard/dashboard";
 import AppLayout from "./components/layout";
 import Profile from "./user/user_profile";
 import UserRoll from "./user/user_roll";
+import CheckboxForm from "./user/checkbox";
 
 export default function App() {
   return (
@@ -49,6 +50,7 @@ export default function App() {
          <Route path="/home" element={<AppLayout />} />
          <Route path="/profile" element={<Profile />} />
          <Route path="/user_roll" element={<UserRoll />} />
+         <Route path="/check" element={<CheckboxForm />} />
 
          <Route path="/customer" element={<Customer />} />
          <Route path="/add_customer" element={<AddCustomer />} />

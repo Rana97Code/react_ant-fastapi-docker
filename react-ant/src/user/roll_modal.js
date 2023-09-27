@@ -49,7 +49,7 @@ function Roll() {
         });
         if(result.ok){
             const data = await result.json();
-            navigate('/profile')
+            navigate('/user_roll')
           }
       }
   
