@@ -7,8 +7,8 @@ from pydantic import BaseModel
 class AccessTable(Base):
     __tablename__="user_role_access"
     id=Column(Integer,primary_key=True,index=True)
-    user_type = Column(Integer,index=True)
-    role_id = Column(Integer,index=True)
+    user_type = Column(Integer)
+    role_id = Column(Integer)
 
 
 Base.metadata.create_all(bind=engine)

@@ -39,34 +39,63 @@ async def get_itm(st_id:int,db:Session=Depends(get_db)):
     return JSONResponse(content=junit)
     
 
+
+
+@user_access_router.put("/update_user_access/{a_id}")
+async def update( a_id:int,acc:List[AccessCreateSchema], db:Session=Depends(get_db)):
+    # try:
+        name= jsonable_encoder(acc)
+        print(name)
+
+        allu=db.query(AccessTable).filter(AccessTable.user_type==a_id).all()
+        aa= jsonable_encoder(allu)
+        print(aa)
+
+        i= []
+        x= []
+        e= []
+        
+        for i,x in enumerate(name):
+            user_type= x["user_type"],
+            role_id= x["role_id"]
+
+            for e in range(i,len(aa)):
+                u=db.query(AccessTable).filter(AccessTable.id==aa[e]["id"]).first()
+                
+                u.user_type = user_type
+                u.role_id = role_id
+                ua =jsonable_encoder(u)
+                print(ua)
+                db.add(u)
+                #break for one time loop
+                break
+        db.commit()
+        return {"Message":"Successfully Update"}
+
+
+#All update methods are right for different differet situation
+
 # @user_access_router.put("/update_user_access/{a_id}")
-# async def update( a_id:int,acc:List[AccessCreateSchema], db:Session=Depends(get_db)):
+# async def update( a_id:int,acc:List[AccessSchema], db:Session=Depends(get_db)):
 #     # try:
 #         name= jsonable_encoder(acc)
 #         # print(a_id)
 #         print(name)
 #         i = []
 #         x = []
-#         for i in range(len(name)):
+#         for i,x in enumerate(name):
 #             print(i)
-#             # unt.append({
-#             user_type= name[i]["user_type"],
-#             role_id= name[i]["role_id"]
-#             # })
-#             # print(unt)
+#             user_type= x["user_type"],
+#             role_id= x["role_id"]
 
-#         u=db.query(AccessTable).filter(AccessTable.user_type==a_id).all()
-#         ua =jsonable_encoder(u)
-#         print(ua)
-#         # unt = []
-#         for e,x in enumerate(ua):
-#             x['user_type'] = user_type
-#             x['role_id']= role_id
-#             db.add(x)
+#             u=db.query(AccessTable).filter(AccessTable.id==x["id"]).first()
+#             # ua =jsonable_encoder(u)
+#             # print(ua)
+#             u.user_type = user_type
+#             u.role_id = role_id
+#             db.add(u)
 #         db.commit()
 #         return {"Message":"Successfully Update"}
-#     # except:
-#     #     return HTTPException(status_code=404,detail="Update Uncessfull")
 
 
 
